@@ -1,0 +1,43 @@
+{
+	"name": "dwc",
+	"description": "A minimal D application.",
+	"copyright": "Copyright © 2014, rikki",
+	"authors": ["rikki"],
+	"dependencies": {
+	},
+	"sourcePaths": [],
+	"subPackages": [
+		{
+			"name": "interfaces",
+			"sourcePaths": ["interfaces"],
+			"importPaths": ["interfaces"]
+		},
+		{
+			"name": "platform",
+
+			"sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
+			"importPaths-windows": ["platforms/win32", "WindowsAPI"],
+			"libs-windows": ["user32", "gdi32"],
+            "libs-posix": ["Xrandr"],
+			
+			"sourcePaths-linux": ["platforms/posix"],
+			"importPaths-linux": ["platforms/posix"],
+			"dependencies-linux": {
+				"x11": ">=1.0.0"
+			},
+			
+			"dependencies": {
+				"dwc:interfaces": "~master"	
+			}
+		},
+		{
+			"name": "test",
+			"sourcePaths": ["test"],
+			"importPaths": ["test"],
+			"targetType": "executable",
+			"dependencies": {
+				"dwc:platform": "~master"	
+			}
+		}
+	]
+}
