@@ -1,6 +1,7 @@
 ﻿module dwc.interfaces.window;
 import dwc.interfaces.eventable;
 import dwc.interfaces.events;
+import dwc.interfaces.context;
 
 /**
  * Arguments to create a window.
@@ -70,12 +71,6 @@ struct WindowConfig {
 	}
 }
 
-enum WindowContextType {
-	None,
-	Opengl,
-    Direct3D
-}
-
 interface Windowable {
 	//this(T...)(T config) { this(WindowConfig(config)); } 
 	//this(WindowConfig);
@@ -137,6 +132,8 @@ interface Windowable {
          */
         void close();
         bool hasBeenClosed();
+
+        IContext context();
 	}
 
 	/**

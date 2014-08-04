@@ -2,6 +2,8 @@
 import dwc.interfaces.window;
 public import dwc.interfaces.window : WindowConfig, Windowable;
 public import dwc.interfaces.events : MouseButtons, Keys, KeyModifiers;
+public import dwc.interfaces.context : WindowContextType, IContext;
+public import dwc.context;
 import dwc.interfaces.eventable;
 import std.conv : to;
 
@@ -13,19 +15,17 @@ class Window : Windowable {
 		HICON previousIcon_;
 		wstring lastTitle;
         bool hasBeenClosed_;
+
+        WindowConfig config_;
+        IContext context_ = null;
     }
 
 	this(T...)(T config) { this(WindowConfig(config)); } 
 
 	this(WindowConfig config) {
+        config_ = config;
 		hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this);
 		title = config.title;
-
-        if (config.contextType == WindowContextType.Opengl) {
-            // create Opengl context!
-        } else if (config.contextType == WindowContextType.Direct3D) {
-            // create Direct3d context!
-        }
 	}
 
 	static {
@@ -156,6 +156,13 @@ class Window : Windowable {
             DestroyWindow(hwnd_);
             CloseWindow(hwnd_);
         }
+
+        IContext context()
+        in {
+            assert(!hasBeenClosed_);
+        } body {
+            return context_;
+        }
 	}
 	
 	override {
@@ -278,7 +285,7 @@ private {
 		wc.hInstance = hInstance;
 		wc.lpszClassName = cast(ushort*)WindowClassName.ptr;
 		wc.hCursor = LoadCursorW(null, cast(ushort*)IDC_ARROW);
-		
+        wc.style |= CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		if (!RegisterClassW(&wc))
 			throw new WindowNotCreatable();
 		
@@ -333,7 +340,8 @@ private {
 					} else {
 						SetWindowLongW(hwnd, GWLP_USERDATA, *cast(uint*)pState);
 					}
-					return cast(LRESULT)0;
+
+                    return cast(LRESULT)0;
 					
 				default:
 					version(X86_64) {
@@ -352,7 +360,14 @@ private {
 					return cast(LRESULT)0;
 					
 				case WM_PAINT:
-					window.onDraw();
+                    if (window.context_ is null) {
+                        if (window.config_.contextType == WindowContextType.Opengl) {
+                            window.context_ = new OpenglContext(window, window.config_);
+                        } else if (window.config_.contextType == WindowContextType.Direct3D) {
+                            // create Direct3d context!
+                        }
+                    }
+                    window.onDraw();
 					return cast(LRESULT)0;
 					
 				case WM_SIZE:

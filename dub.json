@@ -27,7 +27,8 @@
 			},
 			
 			"dependencies": {
-				"dwc:interfaces": "~master"	
+				"dwc:interfaces": "~master",
+                "derelict-gl3": ">=1.0.4"
 			}
 		},
 		{

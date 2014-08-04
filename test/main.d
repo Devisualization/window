@@ -3,7 +3,7 @@ import dwc.window;
 import std.stdio;
 
 void main() {
-	Window window = new Window(800, 600, "My DWC window!"w);
+	Window window = new Window(800, 600, "My DWC window!"w, 0, 0, WindowContextType.Opengl);
 	window.show();
 	
 	window.move(200, 200);
@@ -11,15 +11,41 @@ void main() {
 
 	window.addOnDraw((Windowable window2) {
 		writeln("drawing");
-		
-		Window window = cast(Window)window2;
 
+		Window window = cast(Window)window2;
+        IContext context = window.context;
+        if (context !is null) {
+            writeln("has context");
+            writeln("type: ", context.type);
+            writeln("toolkit version: ", context.toolkitVersion);
+            writeln("shading language version: ", context.shadingLanguageVersion);
+        } else {
+            writeln("has not got context");
+        }
 		version(Windows) {
-			import windows;
-			PAINTSTRUCT ps;
-			BeginPaint(window.hwnd, &ps);
-			FillRect(ps.hdc, &ps.rcPaint, cast(HBRUSH)(COLOR_HOTLIGHT+1));
-			EndPaint(window.hwnd, &ps);
+            if (context !is null && context.type == WindowContextType.Opengl) {
+                import derelict.opengl3.gl;
+                glLoadIdentity();
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                glColor3f(0f, 1f, 0f);
+
+                glBegin(GL_TRIANGLES);
+                glVertex2f(-100, -100);
+                glVertex2f(100, -100);
+                glVertex2f(100, 100);
+
+                glVertex2f(-100, -100);
+                glVertex2f(-100, 100);
+                glVertex2f(100, 100);
+                glEnd();
+            } else if (context !is null && context.type == WindowContextType.Direct3D) {
+            } else {
+    			/*import windows;
+    			PAINTSTRUCT ps;
+    			BeginPaint(window.hwnd, &ps);
+    			FillRect(ps.hdc, &ps.rcPaint, cast(HBRUSH)(COLOR_HOTLIGHT+1));
+    			EndPaint(window.hwnd, &ps);*/
+            }
 		} else version(linux) {
 			import xlib = x11.Xlib;
 			import xx11 = x11.X;
@@ -100,8 +126,11 @@ void main() {
 
         if (window.hasBeenClosed)
             break;
-        else
+        else {
             window.onDraw();
-        //Thread.sleep(dur!"msecs"(25));
+            if (window.context !is null)
+                window.context.swapBuffers();
+        }
+        Thread.sleep(dur!"msecs"(25));
     }
 }
