@@ -1,7 +1,8 @@
 DWC
 ===
 
-Window creational toolkit, cross platform. Written in D.
+Window creational toolkit, cross platform. Written in D.<br/>
+Depends on Derelict-GL3 for Opengl support.
 
 Features
 --------
@@ -11,6 +12,7 @@ Features
 * Mouse left/right/middle down/up
 * Prevent close
 * Window Icon, Text
+* Context creation (Windows, OpenGL)
 
 Example
 -------
@@ -48,4 +50,5 @@ TODO
 * Make sure icons work on Posix
 * Make sure full screen works correctly on Posix (tempermental on XFCE)
 * Mac OSX
-* Context creation
+* Context creation (Direct3D, Opengl on Posix)
+* On window redisplay(undo of minimise)/maximise/minimise
