@@ -49,6 +49,10 @@ TODO
 -----
 * Make sure icons work on Posix
 * Make sure full screen works correctly on Posix (tempermental on XFCE)
-* Mac OSX
-* Context creation (Direct3D, Opengl on Posix)
+* Mac OSX (using xquartz aka x11)
+	* Window moving
+	* Icons
+	* Opengl context
+	* Key mapping e.g. "super" key
+* Context creation (Direct3D on Windows)
 * On window redisplay(undo of minimise)/maximise/minimise
