@@ -1,8 +1,10 @@
 module dwc.window;
+import dwc.context;
 import dwc.interfaces.window;
+import dwc.interfaces.eventable;
 public import dwc.interfaces.window : WindowConfig, Windowable;
 public import dwc.interfaces.events : MouseButtons, Keys, KeyModifiers;
-import dwc.interfaces.eventable;
+public import dwc.interfaces.context : WindowContextType, IContext;
 import std.conv : to;
 
 private {
@@ -24,6 +26,8 @@ class Window : Windowable {
 
         bool hasBeenClosed_;
         xlib.Atom closeAtom_;
+
+        IContext context_;
 	}
 
 	this(T...)(T config) { this(WindowConfig(config)); } 
@@ -42,6 +46,7 @@ class Window : Windowable {
 
         if (config.contextType == WindowContextType.Opengl) {
             // create Opengl context!
+            context_ = new OpenglContext(this, config);
         } else if (config.contextType == WindowContextType.Direct3D) {
             // create Direct3d context!
             throw new Exception("Cannot create Direct3D context on non Windows targets");
@@ -304,6 +309,13 @@ class Window : Windowable {
             }
             xlib.XDestroyWindow(display_, wind_);
             hasBeenClosed_ = true;
+        }
+
+        IContext context()
+        in {
+            assert(!hasBeenClosed_);
+        } body {
+            return context_;
         }
 
         bool hasBeenClosed() { return hasBeenClosed_; }
