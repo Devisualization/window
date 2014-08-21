@@ -76,6 +76,23 @@ void main() {
 			xlib.XFillRectangle(window.x11Display, window.x11Window, gc, 0, 0, width, height);
 			
 			xlib.XFreeGC(x11Display, gc);
+		} else version(OSX) {
+		    if (context !is null && context.type == WindowContextType.Opengl) {
+                import derelict.opengl3.gl;
+                glLoadIdentity();
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                glColor3f(0f, 1f, 0f);
+
+                glBegin(GL_TRIANGLES);
+                glVertex2f(-100, -100);
+                glVertex2f(100, -100);
+                glVertex2f(100, 100);
+
+                glVertex2f(-100, -100);
+                glVertex2f(-100, 100);
+                glVertex2f(100, 100);
+                glEnd();
+            }
 		}
 	});
 	

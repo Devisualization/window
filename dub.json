@@ -25,7 +25,7 @@
 			
 			"sourcePaths-osx": ["platforms/macosx"],
 			"importPaths-osx": ["platforms/macosx"],
-			"lflags-osx": ["/usr/X11/lib/libX11.dylib", "/usr/X11/lib/libXrandr.dylib"],
+			"lflags-osx": ["/usr/X11/lib/libX11.dylib", "/usr/X11/lib/libXrandr.dylib", "/usr/X11/lib/libGL.dylib"],
 			
 			"dependencies-posix": {
 				"x11": ">=1.0.0"

@@ -25,7 +25,7 @@ class OpenglContext : IContext {
 
     this(Window window, WindowConfig config) {
         if (!loadedDGL) {
-            //DerelictGL3.load();
+            DerelictGL3.load();
             DerelictGL.load();
             loadedDGL = true;
         }
@@ -44,6 +44,7 @@ class OpenglContext : IContext {
         void activate() {
             dglx.glXMakeCurrent(display, cast(uint)window, glc);
             DerelictGL3.reload();
+            DerelictGL.reload();
         }
         
         void destroy() {
