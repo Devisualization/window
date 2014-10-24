@@ -56,7 +56,7 @@ mixin template Eventing(string name, T...) {
 			mixin("moveAll(filter!(a => a !is value)(" ~ name ~ "_), " ~ name ~ "_);"); 
 		}});
 	mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
-			mixin("moveAll(filter!(a => a !is " ~ name ~ "_assoc.get(value, null))(" ~ name ~ "_), " ~ name ~ "_);"); 
+            mixin("moveAll(filter!(a => (value in " ~ name ~ "_assoc && a !is " ~ name ~ "_assoc[value]) || (value !in " ~ name ~ "_assoc) )(" ~ name ~ "_), " ~ name ~ "_);"); 
 		}});
 	
     mixin("size_t count" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(){
