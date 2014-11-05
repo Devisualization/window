@@ -1,0 +1,387 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BD027CED1A0A2EB000C9C88D /* window_events.m in Sources */ = {isa = PBXBuildFile; fileRef = BD027CEC1A0A2EB000C9C88D /* window_events.m */; };
+		BD0421E91A00BD5C0074D88E /* evtloop.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0421E81A00BD5C0074D88E /* evtloop.m */; };
+		BD0421EF1A00BD5C0074D88E /* libdwc-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0421E31A00BD5C0074D88E /* libdwc-osx.a */; };
+		BD0421FE1A01E7550074D88E /* screen.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0421FD1A01E7550074D88E /* screen.m */; };
+		BD0422001A01EA5D0074D88E /* setup.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0421FF1A01EA5D0074D88E /* setup.m */; };
+		BD0422031A01F9E50074D88E /* window.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0422021A01F9E50074D88E /* window.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BD0421F01A00BD5C0074D88E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD0421DB1A00BD5C0074D88E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD0421E21A00BD5C0074D88E;
+			remoteInfo = "dwc-osx";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BD027CEB1A0A257500C9C88D /* events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = events.h; sourceTree = "<group>"; };
+		BD027CEC1A0A2EB000C9C88D /* window_events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = window_events.m; sourceTree = "<group>"; };
+		BD0421E31A00BD5C0074D88E /* libdwc-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libdwc-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD0421E81A00BD5C0074D88E /* evtloop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = evtloop.m; sourceTree = "<group>"; };
+		BD0421EE1A00BD5C0074D88E /* dwc-osxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dwc-osxTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD0421F41A00BD5C0074D88E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD0421FD1A01E7550074D88E /* screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = screen.m; sourceTree = "<group>"; };
+		BD0421FF1A01EA5D0074D88E /* setup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = setup.m; sourceTree = "<group>"; };
+		BD0422011A01EB2C0074D88E /* dwc_cocoa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dwc_cocoa.h; sourceTree = "<group>"; };
+		BD0422021A01F9E50074D88E /* window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = window.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BD0421E01A00BD5C0074D88E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD0421EB1A00BD5C0074D88E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD0421EF1A00BD5C0074D88E /* libdwc-osx.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BD0421DA1A00BD5C0074D88E = {
+			isa = PBXGroup;
+			children = (
+				BD0421E51A00BD5C0074D88E /* dwc-osx */,
+				BD0421F21A00BD5C0074D88E /* dwc-osxTests */,
+				BD0421E41A00BD5C0074D88E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BD0421E41A00BD5C0074D88E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD0421E31A00BD5C0074D88E /* libdwc-osx.a */,
+				BD0421EE1A00BD5C0074D88E /* dwc-osxTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BD0421E51A00BD5C0074D88E /* dwc-osx */ = {
+			isa = PBXGroup;
+			children = (
+				BD0421E81A00BD5C0074D88E /* evtloop.m */,
+				BD0421FD1A01E7550074D88E /* screen.m */,
+				BD0421FF1A01EA5D0074D88E /* setup.m */,
+				BD0422011A01EB2C0074D88E /* dwc_cocoa.h */,
+				BD0422021A01F9E50074D88E /* window.m */,
+				BD027CEB1A0A257500C9C88D /* events.h */,
+				BD027CEC1A0A2EB000C9C88D /* window_events.m */,
+			);
+			path = "dwc-osx";
+			sourceTree = "<group>";
+		};
+		BD0421F21A00BD5C0074D88E /* dwc-osxTests */ = {
+			isa = PBXGroup;
+			children = (
+				BD0421F31A00BD5C0074D88E /* Supporting Files */,
+			);
+			path = "dwc-osxTests";
+			sourceTree = "<group>";
+		};
+		BD0421F31A00BD5C0074D88E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BD0421F41A00BD5C0074D88E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BD0421E11A00BD5C0074D88E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BD0421E21A00BD5C0074D88E /* dwc-osx */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD0421F71A00BD5C0074D88E /* Build configuration list for PBXNativeTarget "dwc-osx" */;
+			buildPhases = (
+				BD0421DF1A00BD5C0074D88E /* Sources */,
+				BD0421E01A00BD5C0074D88E /* Frameworks */,
+				BD0421E11A00BD5C0074D88E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "dwc-osx";
+			productName = "dwc-osx";
+			productReference = BD0421E31A00BD5C0074D88E /* libdwc-osx.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BD0421ED1A00BD5C0074D88E /* dwc-osxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD0421FA1A00BD5C0074D88E /* Build configuration list for PBXNativeTarget "dwc-osxTests" */;
+			buildPhases = (
+				BD0421EA1A00BD5C0074D88E /* Sources */,
+				BD0421EB1A00BD5C0074D88E /* Frameworks */,
+				BD0421EC1A00BD5C0074D88E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BD0421F11A00BD5C0074D88E /* PBXTargetDependency */,
+			);
+			name = "dwc-osxTests";
+			productName = "dwc-osxTests";
+			productReference = BD0421EE1A00BD5C0074D88E /* dwc-osxTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BD0421DB1A00BD5C0074D88E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Rikki Cattermole";
+				TargetAttributes = {
+					BD0421E21A00BD5C0074D88E = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					BD0421ED1A00BD5C0074D88E = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = BD0421DE1A00BD5C0074D88E /* Build configuration list for PBXProject "dwc-osx" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BD0421DA1A00BD5C0074D88E;
+			productRefGroup = BD0421E41A00BD5C0074D88E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BD0421E21A00BD5C0074D88E /* dwc-osx */,
+				BD0421ED1A00BD5C0074D88E /* dwc-osxTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BD0421EC1A00BD5C0074D88E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BD0421DF1A00BD5C0074D88E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD0422001A01EA5D0074D88E /* setup.m in Sources */,
+				BD0421E91A00BD5C0074D88E /* evtloop.m in Sources */,
+				BD027CED1A0A2EB000C9C88D /* window_events.m in Sources */,
+				BD0421FE1A01E7550074D88E /* screen.m in Sources */,
+				BD0422031A01F9E50074D88E /* window.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD0421EA1A00BD5C0074D88E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BD0421F11A00BD5C0074D88E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD0421E21A00BD5C0074D88E /* dwc-osx */;
+			targetProxy = BD0421F01A00BD5C0074D88E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BD0421F51A00BD5C0074D88E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BD0421F61A00BD5C0074D88E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BD0421F81A00BD5C0074D88E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BD0421F91A00BD5C0074D88E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		BD0421FB1A00BD5C0074D88E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "dwc-osxTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BD0421FC1A00BD5C0074D88E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "dwc-osxTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BD0421DE1A00BD5C0074D88E /* Build configuration list for PBXProject "dwc-osx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD0421F51A00BD5C0074D88E /* Debug */,
+				BD0421F61A00BD5C0074D88E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD0421F71A00BD5C0074D88E /* Build configuration list for PBXNativeTarget "dwc-osx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD0421F81A00BD5C0074D88E /* Debug */,
+				BD0421F91A00BD5C0074D88E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD0421FA1A00BD5C0074D88E /* Build configuration list for PBXNativeTarget "dwc-osxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD0421FB1A00BD5C0074D88E /* Debug */,
+				BD0421FC1A00BD5C0074D88E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BD0421DB1A00BD5C0074D88E /* Project object */;
+}

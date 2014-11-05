@@ -10,7 +10,8 @@ enum KeyModifiers : ubyte {
     None = 1 << 0,
     Shift = 1 << 1,
     Control = 1 << 2,
-    Alt = 1 << 3
+    Alt = 1 << 3,
+    Super = 1 << 4
 }
 
 enum Keys {
