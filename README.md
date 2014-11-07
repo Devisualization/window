@@ -46,7 +46,7 @@ However it should be one draw per x time units. For most efficient loop.
 
 TODO
 -----
-* Confirm prevent close works on all platforms
+* Confirm prevent close works on Windows and X11
 * Make sure icons work on Posix
 * Make sure full screen works correctly on Posix (tempermental on XFCE)
 * Context creation (Direct3D on Windows)
