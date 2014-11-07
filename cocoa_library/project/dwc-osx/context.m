@@ -27,10 +27,8 @@ void cocoaCreateOGLContext(int id, int minVersion) {
     NSOpenGLPixelFormat *pixelFormat;
     
     if (minVersion == 3) {
-        printf("creating nonLegacy\n");
         pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes: glAttributes3Plus];
     } else {
-        printf("creating legacy\n");
         pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes: glAttributesLegacy];
     }
     

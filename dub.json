@@ -14,22 +14,24 @@
 		},
 		{
 			"name": "platform",
-
+            "targetType": "sourceLibrary",
+            
 			"sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
 			"importPaths-windows": ["platforms/win32", "WindowsAPI"],
 			"libs-windows": ["user32", "gdi32"],
-            "libs-linux": ["Xrandr"],
 			
 			"sourcePaths-linux": ["platforms/linux"],
 			"importPaths-linux": ["platforms/linux"],
+			"libs-linux": ["Xrandr"],
+			
+			"dependencies-linux": {
+				"x11": ">=1.0.0"
+			},
 			
 			"sourcePaths-osx": ["platforms/macosx"],
 			"importPaths-osx": ["platforms/macosx"],
-			"lflags-osx": ["/usr/X11/lib/libX11.dylib", "/usr/X11/lib/libXrandr.dylib", "/usr/X11/lib/libGL.dylib"],
-			
-			"dependencies-posix": {
-				"x11": ">=1.0.0"
-			},
+			"lflags-osx": ["/System/Library/Frameworks/Cocoa.framework/Cocoa"],
+			"sourceFiles-osx": ["cocoa_library/bin/Debug/libdwc-osx.a"],
 			
 			"dependencies": {
 				"dwc:interfaces": "~master",
