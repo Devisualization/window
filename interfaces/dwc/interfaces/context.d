@@ -1,9 +1,12 @@
 ﻿module dwc.interfaces.context;
 
-enum WindowContextType {
-    None,
-    Opengl,
-    Direct3D
+enum WindowContextType : ubyte {
+    None = 0,
+    Opengl = OpenglLegacy | Opengl3Plus,
+    Direct3D = 1 << 1,
+    
+    OpenglLegacy = 1 << 2,
+    Opengl3Plus = 1 << 3
 }
 
 /**

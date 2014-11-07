@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD027CED1A0A2EB000C9C88D /* window_events.m in Sources */ = {isa = PBXBuildFile; fileRef = BD027CEC1A0A2EB000C9C88D /* window_events.m */; };
+		BD027CEF1A0C85F600C9C88D /* context.m in Sources */ = {isa = PBXBuildFile; fileRef = BD027CEE1A0C85F600C9C88D /* context.m */; };
 		BD0421E91A00BD5C0074D88E /* evtloop.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0421E81A00BD5C0074D88E /* evtloop.m */; };
 		BD0421EF1A00BD5C0074D88E /* libdwc-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0421E31A00BD5C0074D88E /* libdwc-osx.a */; };
 		BD0421FE1A01E7550074D88E /* screen.m in Sources */ = {isa = PBXBuildFile; fileRef = BD0421FD1A01E7550074D88E /* screen.m */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		BD027CEB1A0A257500C9C88D /* events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = events.h; sourceTree = "<group>"; };
 		BD027CEC1A0A2EB000C9C88D /* window_events.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = window_events.m; sourceTree = "<group>"; };
+		BD027CEE1A0C85F600C9C88D /* context.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = context.m; sourceTree = "<group>"; };
 		BD0421E31A00BD5C0074D88E /* libdwc-osx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libdwc-osx.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0421E81A00BD5C0074D88E /* evtloop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = evtloop.m; sourceTree = "<group>"; };
 		BD0421EE1A00BD5C0074D88E /* dwc-osxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dwc-osxTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +87,7 @@
 				BD0422021A01F9E50074D88E /* window.m */,
 				BD027CEB1A0A257500C9C88D /* events.h */,
 				BD027CEC1A0A2EB000C9C88D /* window_events.m */,
+				BD027CEE1A0C85F600C9C88D /* context.m */,
 			);
 			path = "dwc-osx";
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				BD0422001A01EA5D0074D88E /* setup.m in Sources */,
 				BD0421E91A00BD5C0074D88E /* evtloop.m in Sources */,
 				BD027CED1A0A2EB000C9C88D /* window_events.m in Sources */,
+				BD027CEF1A0C85F600C9C88D /* context.m in Sources */,
 				BD0421FE1A01E7550074D88E /* screen.m in Sources */,
 				BD0422031A01F9E50074D88E /* window.m in Sources */,
 			);

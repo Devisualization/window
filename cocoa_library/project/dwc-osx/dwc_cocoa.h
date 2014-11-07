@@ -103,9 +103,14 @@ void cocoaCanResize(int window, int can);
 /**
  * Makes the window fullscreen (or not)
  */
-void cocoaFullScreen(int id, int is);
+void cocoaFullScreen(int window, int is);
 
-    #if 1
+void cocoaCreateOGLContext(int window, int minVersion);
+void cocoaActivateOGLContext(int window);
+void cocoaDestroyOGLContext(int window);
+void cocoaSwapOGLBuffers(int window);
+
+    #if 0
         void test() {
             unsigned char* icon = malloc(4*4);
             

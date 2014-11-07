@@ -1,5 +1,5 @@
 module dwc.window;
-//TODO: import dwc.context;
+import dwc.context;
 import dwc.interfaces.window;
 import dwc.interfaces.eventable;
 public import dwc.interfaces.window : WindowConfig, Windowable;
@@ -30,9 +30,9 @@ class Window : Windowable {
 			dispToInsts[cocoaId] = this;
 		}
 
-        if (config.contextType == WindowContextType.Opengl) {
+        if ((config.contextType | WindowContextType.Opengl3Plus) || (config.contextType | WindowContextType.OpenglLegacy)) {
             // create Opengl context!
-            //TODO: context_ = new OpenglContext(this, config);
+            context_ = new OpenglContext(this, config, cocoaId);
         } else if (config.contextType == WindowContextType.Direct3D) {
             // create Direct3d context!
             throw new Exception("Cannot create Direct3D context on non Windows targets");

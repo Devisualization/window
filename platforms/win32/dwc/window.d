@@ -361,7 +361,7 @@ private {
 					
 				case WM_PAINT:
                     if (window.context_ is null) {
-                        if (window.config_.contextType == WindowContextType.Opengl) {
+                        if ((config.contextType | WindowContextType.Opengl3Plus) || (config.contextType | WindowContextType.OpenglLegacy)) {
                             window.context_ = new OpenglContext(window, window.config_);
                         } else if (window.config_.contextType == WindowContextType.Direct3D) {
                             // create Direct3d context!

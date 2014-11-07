@@ -13,6 +13,9 @@
 
         -(void) setLastX: (int)value;
         -(void) setLastY: (int)value;
+
+        -(NSOpenGLContext*) openGLContext;
+        -(void) setOpenGLContext: (NSOpenGLContext*)value;
     @end
 
     /**

@@ -3,7 +3,7 @@ import dwc.window;
 import std.stdio;
 
 void main() {
-	Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.Opengl);
+	Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.OpenglLegacy);
 	window.show();
 	
 	window.size(200, 200);

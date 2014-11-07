@@ -20,6 +20,16 @@
         lastY_ = value;
     }
 
+    NSOpenGLContext* openGLContext_;
+
+    -(NSOpenGLContext*) openGLContext {
+        return openGLContext_;
+    }
+
+    -(void) setOpenGLContext: (NSOpenGLContext*)value {
+        openGLContext_ = value;
+    }
+
     /**
      * Mouse down events (left, middle and right)
      */

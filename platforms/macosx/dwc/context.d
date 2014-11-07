@@ -10,50 +10,41 @@ class OpenglContext : IContext {
     private {
         import derelict.opengl3.gl3;
         import derelict.opengl3.gl;
-        import dglx = derelict.opengl3.glx;
-        //import derelict.opengl3.glxext;
-        import dxtypes = derelict.util.xtypes;
-
-        import xx11 = x11.X;
-        import xlib = x11.Xlib;
-
-        dxtypes.XVisualInfo* vi;
-        dglx.GLXContext glc;
-        xlib.Display* display;
-        xlib.Window window;
+        
+        int cocoaId;
     }
 
-    this(Window window, WindowConfig config) {
+    this(Window window, WindowConfig config, int cocoaId) {
         if (!loadedDGL) {
             DerelictGL3.load();
             DerelictGL.load();
             loadedDGL = true;
         }
-        this.window = window.x11Window;
-        display = window.x11Display;
+        
+        this.cocoaId = cocoaId;
 
-        int[] att = [dglx.GLX_RGBA, dglx.GLX_DEPTH_SIZE, 24, dglx.GLX_DOUBLEBUFFER, xx11.None];
-        vi = dglx.glXChooseVisual(display, 0, att.ptr);
-
-        glc = dglx.glXCreateContext(display, vi, null, GL_TRUE);
-
+        if ((config.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus) {
+            cocoaCreateOGLContext(cocoaId, 3);
+        } else {
+            cocoaCreateOGLContext(cocoaId, 1);
+        }
+        
         activate();
     }
 
     @property {
         void activate() {
-            dglx.glXMakeCurrent(display, cast(uint)window, glc);
+            cocoaActivateOGLContext(cocoaId);
             DerelictGL3.reload();
             DerelictGL.reload();
         }
         
         void destroy() {
-            xlib.XFree(vi);
-            dglx.glXDestroyContext(display, glc);
+            cocoaDestroyOGLContext(cocoaId);
         }
         
         void swapBuffers() {
-            dglx.glXSwapBuffers(display, cast(uint)window);
+            cocoaSwapOGLBuffers(cocoaId);
         }
 
         WindowContextType type() { return WindowContextType.Opengl; }
@@ -109,5 +100,14 @@ class OpenglContext : IContext {
             
             return ret;
         }
+    }
+}
+
+private {
+    extern(C) {
+        void cocoaCreateOGLContext(int window, int minVersion);
+        void cocoaActivateOGLContext(int window);
+        void cocoaDestroyOGLContext(int window);
+        void cocoaSwapOGLBuffers(int window);
     }
 }
