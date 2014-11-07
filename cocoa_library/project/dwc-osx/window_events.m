@@ -112,13 +112,6 @@
         }
     }
 
-    -(void)close {
-        int id = (int)[self windowNumber];
-        [super close];
-    
-        cocoaEventOnClose(id);
-    }
-
     -(void)windowResized:(NSNotification *)notification {
         NSRect contentRect = [self contentRectForFrameRect: [self frame]];
         cocoaEventOnResize((int)[self windowNumber], contentRect.size.width, contentRect.size.height);
@@ -147,6 +140,11 @@
         enum CocoaKeys key = [self _getKeyFromKeyCode: [theEvent keyCode]];
     
         cocoaEventOnKeyUp((int)[self windowNumber], modifiers, key);
+    }
+
+    - (BOOL)windowShouldClose:(id)sender {
+        cocoaEventOnClose((int)[self windowNumber]);
+        return NO;
     }
 
     - (uint8) _getModifierFromCode: (NSEventModifierFlags) modifiers {
