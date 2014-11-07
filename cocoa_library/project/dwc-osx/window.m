@@ -38,6 +38,9 @@ int cocoaCreateWindow(struct CocoaWindowData data) {
     [[NSNotificationCenter defaultCenter] addObserver: window
                                              selector: @selector(windowMoved:) name:NSWindowDidMoveNotification
                                                object: window];
+    [[NSNotificationCenter defaultCenter] addObserver: window
+                                             selector: @selector(forceRedraw:) name:NSWindowDidExposeNotification
+                                               object: window];
     
     return windowNumber.intValue;
 }

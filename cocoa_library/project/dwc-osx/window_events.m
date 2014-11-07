@@ -131,6 +131,10 @@
         cocoaEventOnMove((int)[self windowNumber], contentRect.origin.x, height - (contentRect.origin.y + contentRect.size.height));
     }
 
+    -(void) forceRedraw:(NSNotification *)notification {
+        cocoaEventForceRedraw((int)[self windowNumber]);
+    }
+
     -(void) keyDown:(NSEvent *)theEvent {
         uint8 modifiers = [self _getModifierFromCode: [theEvent modifierFlags]];
         enum CocoaKeys key = [self _getKeyFromKeyCode: [theEvent keyCode]];

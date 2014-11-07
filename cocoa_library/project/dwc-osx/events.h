@@ -60,4 +60,5 @@
     void cocoaEventOnMove(int window, int x, int y);
     void cocoaEventOnKeyDown(int window, uint8 modifiers, enum CocoaKeys key);
     void cocoaEventOnKeyUp(int window, uint8 modifiers, enum CocoaKeys key);
+    void cocoaEventForceRedraw(int window);
 #endif

@@ -243,5 +243,9 @@ private {
         void cocoaEventOnKeyUp(int window, ubyte modifiers, Keys key) {
             dispToInsts[window].onKeyUp(key, cast(KeyModifiers)modifiers);
         }
+        
+        void cocoaEventForceRedraw(int window) {
+            dispToInsts[window].onDraw();
+        }
     }
 }
