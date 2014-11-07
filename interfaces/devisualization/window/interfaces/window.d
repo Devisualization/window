@@ -1,7 +1,7 @@
-﻿module dwc.interfaces.window;
-import dwc.interfaces.eventable;
-import dwc.interfaces.events;
-import dwc.interfaces.context;
+﻿module devisualization.window.interfaces.window;
+import devisualization.window.interfaces.eventable;
+import devisualization.window.interfaces.events;
+import devisualization.window.interfaces.context;
 
 /**
  * Arguments to create a window.

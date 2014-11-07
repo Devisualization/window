@@ -1,5 +1,5 @@
 {
-	"name": "dwc",
+	"name": "de_window",
 	"description": "A minimal D application.",
 	"copyright": "Copyright © 2014, rikki",
 	"authors": ["rikki"],
@@ -31,10 +31,10 @@
 			"sourcePaths-osx": ["platforms/macosx"],
 			"importPaths-osx": ["platforms/macosx"],
 			"lflags-osx": ["/System/Library/Frameworks/Cocoa.framework/Cocoa"],
-			"sourceFiles-osx": ["cocoa_library/bin/Debug/libdwc-osx.a"],
+			"sourceFiles-osx": ["cocoa_library/bin/Debug/libdevisualization.window-osx.a"],
 			
 			"dependencies": {
-				"dwc:interfaces": "~master",
+				"de_window:interfaces": "~master",
                 "derelict-gl3": ">=1.0.4"
 			}
 		},
@@ -44,7 +44,7 @@
 			"importPaths": ["test"],
 			"targetType": "executable",
 			"dependencies": {
-				"dwc:platform": "~master"	
+				"de_window:platform": "~master"	
 			}
 		}
 	]

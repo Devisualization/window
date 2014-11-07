@@ -1,10 +1,10 @@
-﻿module dwc.window;
-import dwc.interfaces.window;
-public import dwc.interfaces.window : WindowConfig, Windowable;
-public import dwc.interfaces.events : MouseButtons, Keys, KeyModifiers;
-public import dwc.interfaces.context : WindowContextType, IContext;
-public import dwc.context;
-import dwc.interfaces.eventable;
+﻿module devisualization.window.window;
+import devisualization.window.interfaces.window;
+public import devisualization.window.interfaces.window : WindowConfig, Windowable;
+public import devisualization.window.interfaces.events : MouseButtons, Keys, KeyModifiers;
+public import devisualization.window.interfaces.context : WindowContextType, IContext;
+public import devisualization.window.context;
+import devisualization.window.interfaces.eventable;
 import std.conv : to;
 
 class Window : Windowable {
@@ -361,7 +361,7 @@ private {
 					
 				case WM_PAINT:
                     if (window.context_ is null) {
-                        if ((config.contextType | WindowContextType.Opengl3Plus) || (config.contextType | WindowContextType.OpenglLegacy)) {
+                        if ((window.config_.contextType | WindowContextType.Opengl3Plus) || (window.config_.contextType | WindowContextType.OpenglLegacy)) {
                             window.context_ = new OpenglContext(window, window.config_);
                         } else if (window.config_.contextType == WindowContextType.Direct3D) {
                             // create Direct3d context!

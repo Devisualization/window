@@ -1,5 +1,5 @@
 ﻿module test.main;
-import dwc.window;
+import devisualization.window.window;
 import std.stdio;
 
 void main() {

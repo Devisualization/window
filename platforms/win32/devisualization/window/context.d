@@ -1,6 +1,6 @@
-module dwc.context;
-import dwc.window;
-import dwc.interfaces.context;
+module devisualization.window.context;
+import devisualization.window.window;
+import devisualization.window.interfaces.context;
 
 import derelict.opengl3.gl3;
 import derelict.opengl3.gl;

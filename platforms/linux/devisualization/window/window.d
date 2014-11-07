@@ -1,10 +1,10 @@
-module dwc.window;
-import dwc.context;
-import dwc.interfaces.window;
-import dwc.interfaces.eventable;
-public import dwc.interfaces.window : WindowConfig, Windowable;
-public import dwc.interfaces.events : MouseButtons, Keys, KeyModifiers;
-public import dwc.interfaces.context : WindowContextType, IContext;
+module devisualization.window.window;
+import devisualization.window.context;
+import devisualization.window.interfaces.window;
+import devisualization.window.interfaces.eventable;
+public import devisualization.window.interfaces.window : WindowConfig, Windowable;
+public import devisualization.window.interfaces.events : MouseButtons, Keys, KeyModifiers;
+public import devisualization.window.interfaces.context : WindowContextType, IContext;
 import std.conv : to;
 
 private {

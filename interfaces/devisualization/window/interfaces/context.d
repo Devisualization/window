@@ -1,4 +1,4 @@
-﻿module dwc.interfaces.context;
+﻿module devisualization.window.interfaces.context;
 
 enum WindowContextType : ubyte {
     None = 0,

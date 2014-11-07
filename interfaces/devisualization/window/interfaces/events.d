@@ -1,4 +1,4 @@
-﻿module dwc.interfaces.events;
+﻿module devisualization.window.interfaces.events;
 
 enum MouseButtons {
     Left,

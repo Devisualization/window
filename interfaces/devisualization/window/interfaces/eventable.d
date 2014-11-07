@@ -1,4 +1,4 @@
-﻿module dwc.interfaces.eventable;
+﻿module devisualization.window.interfaces.eventable;
 import std.string : toUpper;
 import std.algorithm : filter, moveAll;
 
