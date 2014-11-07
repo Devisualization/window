@@ -31,10 +31,8 @@ private {
 
 class OpenglContext : IContext {
     private {
-        import derelict.opengl3.gl3;
         import derelict.opengl3.gl;
         import dglx = derelict.opengl3.glx;
-        //import derelict.opengl3.glxext;
         import dxtypes = derelict.util.xtypes;
 
         import xx11 = x11.X;
@@ -48,7 +46,6 @@ class OpenglContext : IContext {
 
     this(Window window, WindowConfig config) {
         if (!loadedDGL) {
-            //DerelictGL3.load();
             DerelictGL.load();
             loadedDGL = true;
         }
@@ -66,7 +63,7 @@ class OpenglContext : IContext {
     @property {
         void activate() {
             dglx.glXMakeCurrent(display, cast(uint)window, glc);
-            DerelictGL3.reload();
+            DerelictGL.reload();
         }
         
         void destroy() {

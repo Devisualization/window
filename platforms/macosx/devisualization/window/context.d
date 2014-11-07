@@ -31,7 +31,6 @@ private {
 
 class OpenglContext : IContext {
     private {
-        import derelict.opengl3.gl3;
         import derelict.opengl3.gl;
         
         int cocoaId;
@@ -39,7 +38,6 @@ class OpenglContext : IContext {
 
     this(Window window, WindowConfig config, int cocoaId) {
         if (!loadedDGL) {
-            DerelictGL3.load();
             DerelictGL.load();
             loadedDGL = true;
         }
@@ -58,7 +56,6 @@ class OpenglContext : IContext {
     @property {
         void activate() {
             cocoaActivateOGLContext(cocoaId);
-            DerelictGL3.reload();
             DerelictGL.reload();
         }
         

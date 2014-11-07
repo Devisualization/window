@@ -25,7 +25,6 @@ module devisualization.window.context;
 import devisualization.window.window;
 import devisualization.window.interfaces.context;
 
-import derelict.opengl3.gl3;
 import derelict.opengl3.gl;
 import derelict.opengl3.wgl;
 import derelict.opengl3.wglext;
@@ -42,7 +41,6 @@ class OpenglContext : IContext {
 
     this(Window window, WindowConfig config) {
         if (!loadedDGL) {
-            DerelictGL3.load();
             DerelictGL.load();
             loadedDGL = true;
         }
@@ -59,7 +57,7 @@ class OpenglContext : IContext {
     @property {
         void activate() {
             wglMakeCurrent(hdc_, hglrc_);
-            DerelictGL3.reload();
+            DerelictGL.reload();
         }
 
         void destroy() {
