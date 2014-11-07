@@ -1,10 +1,10 @@
 {
 	"name": "de_window",
-	"description": "A minimal D application.",
-	"copyright": "Copyright © 2014, rikki",
-	"authors": ["rikki"],
-	"dependencies": {
-	},
+	"description": "Provides window and OpenGL context creation cross platform.",
+	"copyright": "Copyright © 2014, Richard Andrew Cattermole, Devisualization",
+	"authors": ["Richard Andrew Cattermole"],
+	"homepage": "https://github.com/Devisualization/window",
+	"license": "MIT",
 	"sourcePaths": [],
 	"subPackages": [
 		{
