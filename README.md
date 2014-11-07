@@ -1,4 +1,4 @@
-DWC
+Devisualization Window Toolkit
 ===
 
 Window creational toolkit, cross platform. Written in D.<br/>
@@ -17,11 +17,11 @@ Example
 -------
 Custom event loop
 ```D
-import dwc.window;
+import devisualization.window.window;
 import std.stdio;
 
 void main() {
-	Window window = new Window(800, 600, "My DWC window!"w);
+	Window window = new Window(800, 600, "My window!"w);
 	window.show();
 
 	window.addOnDraw((Windowable window2) {
