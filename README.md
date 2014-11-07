@@ -10,9 +10,8 @@ Features
 * Move, Resize
 * Key down/up with modifiers
 * Mouse left/right/middle down/up
-* Prevent close
 * Window Icon, Text
-* Context creation (Windows, OpenGL)
+* OpenGL (both legacy and 3+) creation (Windows, X11, OSX (Cocoa))
 
 Example
 -------
@@ -47,12 +46,8 @@ However it should be one draw per x time units. For most efficient loop.
 
 TODO
 -----
+* Confirm prevent close works on all platforms
 * Make sure icons work on Posix
 * Make sure full screen works correctly on Posix (tempermental on XFCE)
-* Mac OSX (using xquartz aka x11)
-	* Window moving
-	* Icons
-	* Opengl context
-	* Key mapping e.g. "super" key
 * Context creation (Direct3D on Windows)
 * On window redisplay(undo of minimise)/maximise/minimise
