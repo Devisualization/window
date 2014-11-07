@@ -1,6 +1,24 @@
 #import "events.h"
 
 @implementation NSWindowDWC
+    int lastX_;
+    int lastY_;
+
+    -(int) lastX {
+        return lastX_;
+    }
+
+    -(int) lastY {
+        return lastY_;
+    }
+
+    -(void) setLastX: (int)value {
+        lastX_ = value;
+    }
+
+    -(void) setLastY: (int)value {
+        lastY_ = value;
+    }
 
     /**
      * Mouse down events (left, middle and right)
@@ -94,6 +112,13 @@
     -(void)windowResized:(NSNotification *)notification {
         NSRect contentRect = [self contentRectForFrameRect: [self frame]];
         cocoaEventOnResize((int)[self windowNumber], contentRect.size.width, contentRect.size.height);
+    }
+
+    -(void) windowMoved:(NSNotification *)notification {
+        NSRect contentRect = [self frame];
+        NSInteger height = [[self screen] frame].size.height;
+        
+        cocoaEventOnMove((int)[self windowNumber], contentRect.origin.x, height - (contentRect.origin.y + contentRect.size.height));
     }
 
     -(void) keyDown:(NSEvent *)theEvent {

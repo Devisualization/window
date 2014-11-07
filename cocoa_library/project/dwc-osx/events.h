@@ -8,6 +8,11 @@
      */
 
     @interface NSWindowDWC : NSWindow
+        -(int) lastX;
+        -(int) lastY;
+
+        -(void) setLastX: (int)value;
+        -(void) setLastY: (int)value;
     @end
 
     /**
@@ -49,6 +54,7 @@
     void cocoaEventMouseMove(int window, float x, float y);
     void cocoaEventOnClose(int window);
     void cocoaEventOnResize(int window, int width, int height);
+    void cocoaEventOnMove(int window, int x, int y);
     void cocoaEventOnKeyDown(int window, uint8 modifiers, enum CocoaKeys key);
     void cocoaEventOnKeyUp(int window, uint8 modifiers, enum CocoaKeys key);
 #endif

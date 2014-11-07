@@ -11,12 +11,15 @@ int cocoaCreateWindow(struct CocoaWindowData data) {
         windowSizes = [[NSMutableDictionary alloc] init];
     }
     
+    // not 100% on x/y/width/height estimates based upon input so not too much of a change visually
     NSWindowDWC* window = [[NSWindowDWC alloc]
                         initWithContentRect: NSMakeRect(data.x, cocoaScreenHeight() - data.y, data.width, data.height)
                         styleMask: NSResizableWindowMask | NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask
                         backing: NSBackingStoreBuffered
                         defer: NO];
     [window setAcceptsMouseMovedEvents: YES];
+    [window setLastX: data.x];
+    [window setLastY: data.y];
     
     NSNumber* windowNumber = [NSNumber numberWithInt: (int)[window windowNumber]];
     [windows setObject: window forKey: windowNumber];
@@ -26,11 +29,14 @@ int cocoaCreateWindow(struct CocoaWindowData data) {
     [windowSizes setObject: NSStringFromRect([window frame]) forKey: windowNumber];
     
     cocoaSetTitle(windowNumber.intValue, data.title);
-    cocoaSetSize(windowNumber.intValue, data.width, data.height);
     cocoaSetPosition(windowNumber.intValue, data.x, data.y);
+    cocoaSetSize(windowNumber.intValue, data.width, data.height);
     
     [[NSNotificationCenter defaultCenter] addObserver: window
                                              selector: @selector(windowResized:) name:NSWindowDidResizeNotification
+                                               object: window];
+    [[NSNotificationCenter defaultCenter] addObserver: window
+                                             selector: @selector(windowMoved:) name:NSWindowDidMoveNotification
                                                object: window];
     
     return windowNumber.intValue;
@@ -71,21 +77,26 @@ void cocoaSetTitle(int id, char* title) {
 }
 
 void cocoaSetSize(int id, int width, int height) {
-    NSWindow* window = [NSApp windowWithWindowNumber: id];
+    NSWindowDWC* window = (NSWindowDWC*)[NSApp windowWithWindowNumber: id];
     
-    NSRect previousSize = NSRectFromString([windowSizes objectForKey: [NSNumber numberWithInt: id]]);
+    NSRect previousSize = [window contentRectForFrameRect: [window frame]];
     previousSize.size.width = width;
     previousSize.size.height = height;
     [windowSizes setObject: NSStringFromRect(previousSize) forKey: [NSNumber numberWithInt: id]];
     
     [window setContentSize: NSMakeSize(width, height)];
+    cocoaSetPosition(id, [window lastX], [window lastY]);
 }
 
 void cocoaSetPosition(int id, int x, int y) {
-    NSWindow* window = [NSApp windowWithWindowNumber: id];
-    y = cocoaScreenHeight() - y;
+    NSWindowDWC* window = (NSWindowDWC*)[NSApp windowWithWindowNumber: id];
+    [window setLastX: x];
+    [window setLastY: y];
     
-    NSRect previousSize = NSRectFromString([windowSizes objectForKey: [NSNumber numberWithInt: id]]);
+    y += [window frame].size.height;
+    y = [[window screen] frame].size.height - y;
+    
+    NSRect previousSize = [window contentRectForFrameRect: [window frame]];
     previousSize.origin.x = x;
     previousSize.origin.y = y;
     [windowSizes setObject: NSStringFromRect(previousSize) forKey: [NSNumber numberWithInt: id]];
@@ -97,18 +108,21 @@ void cocoaCanResize(int id, int can) {
     NSWindow* window = [NSApp windowWithWindowNumber: id];
     
     if (can) {
-        [window setStyleMask: NSResizableWindowMask | NSTitledWindowMask | NSClosableWindowMask];
+        [window setStyleMask: NSResizableWindowMask | NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask];
     } else {
-        [window setStyleMask: NSTitledWindowMask | NSClosableWindowMask];
+        [window setStyleMask: NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask];
     }
 }
 
 void cocoaFullScreen(int id, int is) {
     NSWindow* window = [NSApp windowWithWindowNumber: id];
     
-    if (is == ([window styleMask] & NSFullScreenWindowMask)) {
-    } else {
-        [window toggleFullScreen: window];
+    if (([window styleMask] & NSFullScreenWindowMask)) {
+        if (is) {
+            [[window contentView] enterFullScreenMode: [NSScreen mainScreen] withOptions: nil];
+        } else {
+            [[window contentView] exitFullScreenModeWithOptions: nil];
+        }
     }
 }
 

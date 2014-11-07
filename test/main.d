@@ -3,14 +3,14 @@ import dwc.window;
 import std.stdio;
 
 void main() {
-	Window window = new Window(800, 600, "My DWC window!"w, 0, 0, WindowContextType.Opengl);
+	Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.Opengl);
 	window.show();
 	
-	window.move(200, 200);
 	window.size(200, 200);
+    window.move(200, 200);
 
 	window.addOnDraw((Windowable window2) {
-		writeln("drawing");
+		//writeln("drawing");
 
 		Window window = cast(Window)window2;
         IContext context = window.context;
@@ -20,7 +20,7 @@ void main() {
             writeln("toolkit version: ", context.toolkitVersion);
             writeln("shading language version: ", context.shadingLanguageVersion);
         } else {
-            writeln("has not got context");
+            //writeln("has not got context");
         }
 		version(Windows) {
             if (context !is null && context.type == WindowContextType.Opengl) {
@@ -40,11 +40,6 @@ void main() {
                 glEnd();
             } else if (context !is null && context.type == WindowContextType.Direct3D) {
             } else {
-    			/*import windows;
-    			PAINTSTRUCT ps;
-    			BeginPaint(window.hwnd, &ps);
-    			FillRect(ps.hdc, &ps.rcPaint, cast(HBRUSH)(COLOR_HOTLIGHT+1));
-    			EndPaint(window.hwnd, &ps);*/
             }
 		} else version(linux) {
 			import xlib = x11.Xlib;
@@ -129,11 +124,11 @@ void main() {
         window.close();
     });
     
-    window.canResize = false;
+    //window.canResize = false;
 
 	window.icon(2, 2, [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0]], cast(ubyte[3]*)[255, 0, 0].ptr);
    
-    //window.fullscreen();
+    window.fullscreen(true);
 
 	//Window.messageLoop();
     while(true) {
