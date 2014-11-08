@@ -14,7 +14,7 @@
 		},
 		{
 			"name": "platform",
-            "targetType": "sourceLibrary",
+			"targetType": "sourceLibrary",
             
 			"sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
 			"importPaths-windows": ["platforms/win32", "WindowsAPI"],
@@ -34,8 +34,8 @@
 			"sourceFiles-osx": ["cocoa_library/bin/Debug/libdevisualization.window-osx.a"],
 			
 			"dependencies": {
-				"de_window:interfaces": "~master",
-                "derelict-gl3": ">=1.0.4"
+				"de_window:interfaces": "*",
+				"derelict-gl3": ">=1.0.4"
 			}
 		},
 		{
@@ -44,7 +44,7 @@
 			"importPaths": ["test"],
 			"targetType": "executable",
 			"dependencies": {
-				"de_window:platform": "~master"	
+				"de_window:platform": "*"	
 			}
 		}
 	]
