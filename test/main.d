@@ -23,6 +23,8 @@
  */
 module test.main;
 import devisualization.window.window;
+import devisualization.image;
+import devisualization.image.mutable;
 import std.stdio;
 
 void main() {
@@ -149,9 +151,9 @@ void main() {
     
     //window.canResize = false;
 
-	window.icon(2, 2, [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0]], cast(ubyte[3]*)[255, 0, 0].ptr);
+    window.icon(new MutableImage(2, 2, colorsFromArray([[255, 0, 0], [0, 255, 0, 0], [0, 0, 255], [0, 0, 0]])));
    
-    window.fullscreen(true);
+    //window.fullscreen(true);
 
 	//Window.messageLoop();
     while(true) {

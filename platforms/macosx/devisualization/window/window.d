@@ -164,6 +164,18 @@ class Window : Windowable {
 			cocoaHideWindow(cocoaId);
 		}
 
+        void icon(Image image)
+        in {
+            assert(!hasBeenClosed_);
+            assert(image !is null);
+        } body {
+            import devisualization.image;
+            GC.free(iconImageData_);
+            iconImageData_ = cast(ubyte*)ubyteRawColor(image.rgba.allPixels).ptr;
+            cocoaSetIcon(cocoaId, &iconImageData_, image.width, image.height);
+        }
+
+        deprecated("Use Devisualization.Image method instead")
 		void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
 		in {
             assert(!hasBeenClosed_);

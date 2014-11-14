@@ -95,6 +95,8 @@ struct WindowConfig {
 }
 
 interface Windowable {
+    import devisualization.image;
+
 	//this(T...)(T config) { this(WindowConfig(config)); } 
 	//this(WindowConfig);
 	
@@ -159,6 +161,8 @@ interface Windowable {
         IContext context();
 	}
 
+    void icon(Image image);
+
 	/**
 	 * 
 	 * Params:
@@ -166,6 +170,7 @@ interface Windowable {
 	 * 		height
 	 * 		data		= rgb data 0 .. 255, 3 bytes per pixel
 	 */
+    deprecated("Use Devisualization.Image method instead")
 	void icon(ushort width, ushort height, ubyte[3][] data, ubyte[3]* transparent = null);
 }
 

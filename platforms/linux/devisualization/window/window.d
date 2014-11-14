@@ -359,9 +359,22 @@ class Window : Windowable {
 			xlib.XUnmapWindow(display_, wind_);
 		}
 
+        void icon(Image image)
+        in {
+            assert(!hasBeenClosed_);
+            assert(image !is null);
+        } body {
+            import devisualization.image;
+            int length = 2 + (image.width * image.height);
+            xlib.Atom net_wm_icon = xlib.XInternAtom(display_, cast(char*)"_NET_WM_ICON\0".ptr, cast(int)false);
+            xlib.Atom cardinal = xlib.XInternAtom(display_, cast(char*)"CARDINAL\0".ptr, cast(int)false);
+            xlib.XChangeProperty(display_, wind_, net_wm_icon, cardinal, 32, xx11.PropModeReplace, cast(ubyte*)ubyteRawColor(image.rgba.allPixels).ptr, length);
+        }
+
         /**
          * Don't think this works. Atleast not in XFCE
          */
+        deprecated("Use Devisualization.Image method instead")
 		void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
 		in {
             assert(!hasBeenClosed_);

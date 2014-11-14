@@ -203,6 +203,34 @@ class Window : Windowable {
 			ShowWindow(hwnd_, SW_HIDE);
 		}
 
+        void icon(Image image)
+        in {
+            assert(!hasBeenClosed_);
+            assert(image !is null);
+        } body {
+            ubyte[4][] data;
+            foreach(pixel; image.rgba.allPixels) {
+                data ~= [pixel.b_ubyte, pixel.g_ubyte, pixel.r_ubyte, pixel.a_ubyte];
+            }
+
+            HBITMAP bitmap = CreateBitmap(image.width, image.height, 1, 32, data.ptr);
+            HBITMAP hbmMask = CreateCompatibleBitmap(GetDC(hwnd_), image.width, image.height);
+            
+            ICONINFO ii;
+            ii.fIcon = TRUE;
+            ii.hbmColor = bitmap;
+            ii.hbmMask = hbmMask;
+            
+            HICON hIcon = CreateIconIndirect(&ii);
+            DeleteObject(hbmMask);
+            
+            if (hIcon) {
+                SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_BIG, cast(LPARAM)hIcon);
+                SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_SMALL, cast(LPARAM)hIcon);
+            }
+        }
+
+        deprecated("Use Devisualization.Image method instead")
 		void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
 		in {
             assert(!hasBeenClosed_);
