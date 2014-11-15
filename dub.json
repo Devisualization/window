@@ -1,55 +1,55 @@
 {
-	"name": "de_window",
-	"description": "Provides window and OpenGL context creation cross platform.",
-	"copyright": "Copyright © 2014, Richard Andrew Cattermole, Devisualization",
-	"authors": ["Richard Andrew Cattermole"],
-	"homepage": "https://github.com/Devisualization/window",
-	"license": "MIT",
-	"sourcePaths": [],
-	"subPackages": [
-		{
-			"name": "interfaces",
-			"sourcePaths": ["interfaces"],
-			"importPaths": ["interfaces"],
+    "name": "de_window",
+    "description": "Provides window and OpenGL context creation cross platform.",
+    "copyright": "Copyright © 2014, Richard Andrew Cattermole, Devisualization",
+    "authors": ["Richard Andrew Cattermole"],
+    "homepage": "https://github.com/Devisualization/window",
+    "license": "MIT",
+    "sourcePaths": [],
+    "subPackages": [
+        {
+            "name": "interfaces",
+            "sourcePaths": ["interfaces"],
+            "importPaths": ["interfaces"],
             "dependencies": {
                 "de_image:interfaces": ">=0.1.3"
             }
-		},
-		{
-			"name": "platform",
-			"targetType": "sourceLibrary",
+        },
+        {
+            "name": "platform",
+            "targetType": "sourceLibrary",
             
-			"sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
-			"importPaths-windows": ["platforms/win32", "WindowsAPI"],
-			"libs-windows": ["user32", "gdi32"],
-			
-			"sourcePaths-linux": ["platforms/linux"],
-			"importPaths-linux": ["platforms/linux"],
-			"libs-linux": ["Xrandr"],
-			
-			"dependencies-linux": {
-				"x11": ">=1.0.0"
-			},
-			
-			"sourcePaths-osx": ["platforms/macosx"],
-			"importPaths-osx": ["platforms/macosx"],
-			"lflags-osx": ["/System/Library/Frameworks/Cocoa.framework/Cocoa"],
-			"sourceFiles-osx": ["cocoa_library/bin/Debug/libdevisualization.window-osx.a"],
-			
-			"dependencies": {
-				"de_window:interfaces": "*",
-				"derelict-gl3": ">=1.0.4"
-			}
-		},
-		{
-			"name": "test",
-			"sourcePaths": ["test"],
-			"importPaths": ["test"],
-			"targetType": "executable",
-			"dependencies": {
+            "sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
+            "importPaths-windows": ["platforms/win32", "WindowsAPI"],
+            "libs-windows": ["user32", "gdi32"],
+            
+            "sourcePaths-linux": ["platforms/linux"],
+            "importPaths-linux": ["platforms/linux"],
+            "libs-linux": ["Xrandr"],
+            
+            "dependencies-linux": {
+                "x11": ">=1.0.0"
+            },
+            
+            "sourcePaths-osx": ["platforms/macosx"],
+            "importPaths-osx": ["platforms/macosx"],
+            "lflags-osx": ["/System/Library/Frameworks/Cocoa.framework/Cocoa"],
+            "sourceFiles-osx": ["cocoa_library/bin/Debug/libdwc-osx.a"],
+            
+            "dependencies": {
+                "de_window:interfaces": "*",
+                "derelict-gl3": ">=1.0.4"
+            }
+        },
+        {
+            "name": "test",
+            "sourcePaths": ["test"],
+            "importPaths": ["test"],
+            "targetType": "executable",
+            "dependencies": {
                 "de_window:platform": "*",   
-				"de_image:mutable": "*"	
-			}
-		}
-	]
+                "de_image:mutable": ">=0.1.3"    
+            }
+        }
+    ]
 }
