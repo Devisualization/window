@@ -31,27 +31,27 @@ import devisualization.window.interfaces.eventable;
 import std.conv : to;
 
 class Window : Windowable {
-	private {
+    private {
         alias size_t = object.size_t; // windows also declares size_t, force it to be from druntime.
 
-		HWND hwnd_;
-		HICON previousIcon_;
-		wstring lastTitle;
+        HWND hwnd_;
+        HICON previousIcon_;
+        wstring lastTitle;
         bool hasBeenClosed_;
 
         WindowConfig config_;
         IContext context_ = null;
     }
 
-	this(T...)(T config) { this(WindowConfig(config)); } 
+    this(T...)(T config) { this(WindowConfig(config)); } 
 
-	this(WindowConfig config) {
+    this(WindowConfig config) {
         config_ = config;
-		hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this);
-		title = config.title;
-	}
+        hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this);
+        title = config.title;
+    }
 
-	static {
+    static {
         void messageLoop() {
             import core.thread : Thread;
             import core.time : dur;
@@ -62,115 +62,115 @@ class Window : Windowable {
             }
         }
 
-		void messageLoopIteration()
+        void messageLoopIteration()
         out {
             import std.stdio : stdout;
             stdout.flush();
         } body {
-			MSG msg;
-			int ret = GetMessageW(&msg, null, 0, 0);
-			
-			if (ret == 0 || ret == -1)
-				return;
-			
-			TranslateMessage(&msg);
-			DispatchMessageW(&msg);
-		}
-	}
-	
-	@property {
-		HWND hwnd()
+            MSG msg;
+            int ret = GetMessageW(&msg, null, 0, 0);
+            
+            if (ret == 0 || ret == -1)
+                return;
+            
+            TranslateMessage(&msg);
+            DispatchMessageW(&msg);
+        }
+    }
+    
+    @property {
+        HWND hwnd()
         in {
             assert(!hasBeenClosed_);
         } body {
-			return hwnd_;
-		}
-		
-		void title(string value)
+            return hwnd_;
+        }
+        
+        void title(string value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			title(to!wstring(value));
-		}
-		
-		void title(dstring value)
+            title(to!wstring(value));
+        }
+        
+        void title(dstring value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			title(to!wstring(value));
-		}
-		
-		void title(wstring value)
+            title(to!wstring(value));
+        }
+        
+        void title(wstring value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			if (value[$-1] != '\0')
-				value ~= '\0';
-			lastTitle = value;
-			
-			SetWindowTextW(hwnd_, cast(ushort*)lastTitle.ptr);
-		}
-		
-		void size(uint width, uint height)
+            if (value[$-1] != '\0')
+                value ~= '\0';
+            lastTitle = value;
+            
+            SetWindowTextW(hwnd_, cast(ushort*)lastTitle.ptr);
+        }
+        
+        void size(uint width, uint height)
         in {
             assert(!hasBeenClosed_);
         } body {
-			// calculates correct width/height size of window
-			RECT rect;
-			
-			rect.top = 0;
-			rect.left = 0;
-			rect.right = width;
-			rect.bottom = height;
-			
-			auto style = GetWindowLongW(hwnd_, GWL_STYLE);
-			if (style == dwFullscreen) {
-				SetWindowLongW(hwnd_, GWL_STYLE, dwStyle);
-				SetWindowLongW(hwnd_, GWL_EXSTYLE, dwExStyle);
-			}
-			
-			AdjustWindowRectEx(&rect, dwStyle, false, dwExStyle);
-			width = rect.right;
-			height = rect.bottom;
-			// calculates correct width/height size of window
-			
-			SetWindowPos(hwnd_, null, 0, 0, width, height, SWP_NOMOVE | SWP_NOOWNERZORDER);
-		}
-		
-		void move(int x, int y)
+            // calculates correct width/height size of window
+            RECT rect;
+            
+            rect.top = 0;
+            rect.left = 0;
+            rect.right = width;
+            rect.bottom = height;
+            
+            auto style = GetWindowLongW(hwnd_, GWL_STYLE);
+            if (style == dwFullscreen) {
+                SetWindowLongW(hwnd_, GWL_STYLE, dwStyle);
+                SetWindowLongW(hwnd_, GWL_EXSTYLE, dwExStyle);
+            }
+            
+            AdjustWindowRectEx(&rect, dwStyle, false, dwExStyle);
+            width = rect.right;
+            height = rect.bottom;
+            // calculates correct width/height size of window
+            
+            SetWindowPos(hwnd_, null, 0, 0, width, height, SWP_NOMOVE | SWP_NOOWNERZORDER);
+        }
+        
+        void move(int x, int y)
         in {
             assert(!hasBeenClosed_);
         } body {
-			SetWindowPos(hwnd_, null, x, y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER);
-		}
-		
-		void canResize(bool can = true)
+            SetWindowPos(hwnd_, null, x, y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER);
+        }
+        
+        void canResize(bool can = true)
         in {
             assert(!hasBeenClosed_);
         } body {
-			auto style = GetWindowLongW(hwnd_, GWL_STYLE);
-			if (can)
-				style |= WS_SIZEBOX | WS_MAXIMIZEBOX;
-			else
-				style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX);
-			SetWindowLongW(hwnd_, GWL_STYLE, style);
-		}
-		
-		void fullscreen(bool isfs = true)
+            auto style = GetWindowLongW(hwnd_, GWL_STYLE);
+            if (can)
+                style |= WS_SIZEBOX | WS_MAXIMIZEBOX;
+            else
+                style &= ~(WS_SIZEBOX | WS_MAXIMIZEBOX);
+            SetWindowLongW(hwnd_, GWL_STYLE, style);
+        }
+        
+        void fullscreen(bool isfs = true)
         in {
             assert(!hasBeenClosed_);
         } body {
-			if (isfs) {
-				SetWindowLongW(hwnd_, GWL_STYLE, dwFullscreen);
-				SetWindowLongW(hwnd_, GWL_EXSTYLE, dwExFullscreen);
-				
-				int cx = GetSystemMetrics(SM_CXSCREEN);
-				int cy = GetSystemMetrics(SM_CYSCREEN);
-				SetWindowPos(hwnd_, HWND_TOP, 0, 0, cx, cy, SWP_SHOWWINDOW);
-			} else {
-				canResize = true;
-			}
-		}
+            if (isfs) {
+                SetWindowLongW(hwnd_, GWL_STYLE, dwFullscreen);
+                SetWindowLongW(hwnd_, GWL_EXSTYLE, dwExFullscreen);
+                
+                int cx = GetSystemMetrics(SM_CXSCREEN);
+                int cy = GetSystemMetrics(SM_CYSCREEN);
+                SetWindowPos(hwnd_, HWND_TOP, 0, 0, cx, cy, SWP_SHOWWINDOW);
+            } else {
+                canResize = true;
+            }
+        }
 
         void close()
         in {
@@ -186,22 +186,22 @@ class Window : Windowable {
         } body {
             return context_;
         }
-	}
-	
-	override {
-		void show()
+    }
+    
+    override {
+        void show()
         in {
             assert(!hasBeenClosed_);
         } body {
-			ShowWindow(hwnd_, SW_SHOW);
-		}
-		
-		void hide()
+            ShowWindow(hwnd_, SW_SHOW);
+        }
+        
+        void hide()
         in {
             assert(!hasBeenClosed_);
         } body {
-			ShowWindow(hwnd_, SW_HIDE);
-		}
+            ShowWindow(hwnd_, SW_HIDE);
+        }
 
         void icon(Image image)
         in {
@@ -231,62 +231,62 @@ class Window : Windowable {
         }
 
         deprecated("Use Devisualization.Image method instead")
-		void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
-		in {
+        void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
+        in {
             assert(!hasBeenClosed_);
-			assert(width * height == data.length, "Icon pixels length must be equal to width * height");
-		} body {
-			ubyte[4][] data;
-			foreach(v; idata) {
-				data ~= [v[2], v[1], v[0], 0];
-			}
+            assert(width * height == data.length, "Icon pixels length must be equal to width * height");
+        } body {
+            ubyte[4][] data;
+            foreach(v; idata) {
+                data ~= [v[2], v[1], v[0], 0];
+            }
 
-			HBITMAP bitmap = CreateBitmap(width, height, 1, 32, data.ptr);
-			HBITMAP hbmMask;
-			if (transparent is null)
-				hbmMask = CreateCompatibleBitmap(GetDC(hwnd_), width, height);
-			else {
-				COLORREF crTransparent = RGB((*transparent)[0], (*transparent)[1], (*transparent)[2]);
+            HBITMAP bitmap = CreateBitmap(width, height, 1, 32, data.ptr);
+            HBITMAP hbmMask;
+            if (transparent is null)
+                hbmMask = CreateCompatibleBitmap(GetDC(hwnd_), width, height);
+            else {
+                COLORREF crTransparent = RGB((*transparent)[0], (*transparent)[1], (*transparent)[2]);
 
-				HDC hdcMem, hdcMem2;
-				BITMAP bm;
+                HDC hdcMem, hdcMem2;
+                BITMAP bm;
 
-				GetObjectA(bitmap, BITMAP.sizeof, &bm);
-				hbmMask = CreateBitmap(width, height, 1, 1, null);
+                GetObjectA(bitmap, BITMAP.sizeof, &bm);
+                hbmMask = CreateBitmap(width, height, 1, 1, null);
 
-				hdcMem = CreateCompatibleDC(GetDC(hwnd_));
-				hdcMem2 = CreateCompatibleDC(GetDC(hwnd_));
+                hdcMem = CreateCompatibleDC(GetDC(hwnd_));
+                hdcMem2 = CreateCompatibleDC(GetDC(hwnd_));
 
-				SelectObject(hdcMem, bitmap);
-				SelectObject(hdcMem2, hbmMask);
+                SelectObject(hdcMem, bitmap);
+                SelectObject(hdcMem2, hbmMask);
 
-				SetBkColor(hdcMem, crTransparent);
-				BitBlt(hdcMem2, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
-				BitBlt(hdcMem, 0, 0, width, height, hdcMem2, 0, 0, SRCINVERT);
+                SetBkColor(hdcMem, crTransparent);
+                BitBlt(hdcMem2, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
+                BitBlt(hdcMem, 0, 0, width, height, hdcMem2, 0, 0, SRCINVERT);
 
-				DeleteDC(hdcMem);
-				DeleteDC(hdcMem2);
-			}
+                DeleteDC(hdcMem);
+                DeleteDC(hdcMem2);
+            }
 
-			ICONINFO ii;
-			ii.fIcon = TRUE;
-			ii.hbmColor = bitmap;
-			ii.hbmMask = hbmMask;
+            ICONINFO ii;
+            ii.fIcon = TRUE;
+            ii.hbmColor = bitmap;
+            ii.hbmMask = hbmMask;
 
-			HICON hIcon = CreateIconIndirect(&ii);
-			DeleteObject(hbmMask);
+            HICON hIcon = CreateIconIndirect(&ii);
+            DeleteObject(hbmMask);
 
-			if (hIcon) {
-				SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_BIG, cast(LPARAM)hIcon);
-				SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_SMALL, cast(LPARAM)hIcon);
-			}
-		}
+            if (hIcon) {
+                SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_BIG, cast(LPARAM)hIcon);
+                SendMessageW(hwnd_, WM_SETICON, cast(WPARAM)ICON_SMALL, cast(LPARAM)hIcon);
+            }
+        }
 
         bool hasBeenClosed() { return hasBeenClosed_; }
-	}
-	
-	mixin Eventing!("onDraw", Windowable);
-	mixin Eventing!("onMove", Windowable, int, int);
+    }
+    
+    mixin Eventing!("onDraw", Windowable);
+    mixin Eventing!("onMove", Windowable, int, int);
     mixin Eventing!("onResize", Windowable, uint, uint);
     mixin Eventing!("onClose", Windowable);
 
@@ -298,119 +298,119 @@ class Window : Windowable {
 }
 
 
-private {	
-	import windows;
-	
-	enum DWORD dwExStyle = 0;
-	enum DWORD dwStyle = WS_OVERLAPPEDWINDOW;
-	
-	enum wstring WindowClassName = "DWC window\0"w;
-	
-	enum DWORD dwFullscreen = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-	enum DWORD dwExFullscreen = WS_EX_APPWINDOW | WS_EX_TOPMOST;
+private {    
+    import windows;
+    
+    enum DWORD dwExStyle = 0;
+    enum DWORD dwStyle = WS_OVERLAPPEDWINDOW;
+    
+    enum wstring WindowClassName = "DWC window\0"w;
+    
+    enum DWORD dwFullscreen = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+    enum DWORD dwExFullscreen = WS_EX_APPWINDOW | WS_EX_TOPMOST;
 
-	// wasn't in windows bindings woops
+    // wasn't in windows bindings woops
 
-	enum GCL_HICON = -14;
-	enum SRCCOPY = 0xCC0020;
-	enum SRCINVERT = 0x660046;
+    enum GCL_HICON = -14;
+    enum SRCCOPY = 0xCC0020;
+    enum SRCINVERT = 0x660046;
 
-	COLORREF RGB(ubyte r, ubyte g, ubyte b) {
-		r = r & 0xFF;
-		g = g & 0xFF;
-		b = b & 0xFF;
-		return cast(COLORREF)((b << 16) | (g << 8) | r);
-	}
+    COLORREF RGB(ubyte r, ubyte g, ubyte b) {
+        r = r & 0xFF;
+        g = g & 0xFF;
+        b = b & 0xFF;
+        return cast(COLORREF)((b << 16) | (g << 8) | r);
+    }
 
 
-	// more actual code
-	
-	HWND createWindow(int x, int y, uint width, uint height, WindowProc wProc, Window* windowPtr) {
-		static HINSTANCE hInstance;
-		
-		if (hInstance is HINSTANCE.init)
-			hInstance = GetModuleHandleA(null);
-		
-		WNDCLASSW wc;
-		wc.lpfnWndProc = wProc;
-		wc.hInstance = hInstance;
-		wc.lpszClassName = cast(ushort*)WindowClassName.ptr;
-		wc.hCursor = LoadCursorW(null, cast(ushort*)IDC_ARROW);
+    // more actual code
+    
+    HWND createWindow(int x, int y, uint width, uint height, WindowProc wProc, Window* windowPtr) {
+        static HINSTANCE hInstance;
+        
+        if (hInstance is HINSTANCE.init)
+            hInstance = GetModuleHandleA(null);
+        
+        WNDCLASSW wc;
+        wc.lpfnWndProc = wProc;
+        wc.hInstance = hInstance;
+        wc.lpszClassName = cast(ushort*)WindowClassName.ptr;
+        wc.hCursor = LoadCursorW(null, cast(ushort*)IDC_ARROW);
         wc.style |= CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
-		if (!RegisterClassW(&wc))
-			throw new WindowNotCreatable();
-		
-		// calculates correct width/height size of window
-		RECT rect;
-		
-		rect.top = 0;
-		rect.left = 0;
-		rect.right = width;
-		rect.bottom = height;
-		
-		AdjustWindowRectEx(&rect, dwStyle, false, dwExStyle);
-		width = rect.right;
-		height = rect.bottom;
-		// calculates correct width/height size of window
-		
-		HWND hwnd = CreateWindowExW(
-			dwExStyle,
-			cast(ushort*)WindowClassName.ptr,
-			null,
-			dwStyle,
-			x, y,
-			width, height,
-			null,
-			null,
-			hInstance,
-			windowPtr);
-		
-		if (hwnd is null)
-			throw new WindowNotCreatable();
+        if (!RegisterClassW(&wc))
+            throw new WindowNotCreatable();
+        
+        // calculates correct width/height size of window
+        RECT rect;
+        
+        rect.top = 0;
+        rect.left = 0;
+        rect.right = width;
+        rect.bottom = height;
+        
+        AdjustWindowRectEx(&rect, dwStyle, false, dwExStyle);
+        width = rect.right;
+        height = rect.bottom;
+        // calculates correct width/height size of window
+        
+        HWND hwnd = CreateWindowExW(
+            dwExStyle,
+            cast(ushort*)WindowClassName.ptr,
+            null,
+            dwStyle,
+            x, y,
+            width, height,
+            null,
+            null,
+            hInstance,
+            windowPtr);
+        
+        if (hwnd is null)
+            throw new WindowNotCreatable();
 
-		InvalidateRgn(hwnd, null, true);		
+        InvalidateRgn(hwnd, null, true);        
 
-		return hwnd;
-	}
-	
-	extern(Windows) {
-		alias WindowProc = LRESULT function(HWND hwnd, uint uMsg, WPARAM wParam, LPARAM lParam);
-		
-		LRESULT windowHandler(HWND hwnd, uint uMsg, WPARAM wParam, LPARAM lParam) {
-			/*
-			 * Handles creational arguments aka the current window 
-			 */
-			Window window;
-			switch(uMsg) {
-				case WM_CREATE:
-					CREATESTRUCTW pCreate = *cast(CREATESTRUCTW*)lParam;
-					void* pState = pCreate.lpCreateParams;
-					
-					version(X86_64) {
-						SetWindowLongPtrW(hwnd, GWLP_USERDATA, *cast(ulong*)pState);
-					} else {
-						SetWindowLongW(hwnd, GWLP_USERDATA, *cast(uint*)pState);
-					}
+        return hwnd;
+    }
+    
+    extern(Windows) {
+        alias WindowProc = LRESULT function(HWND hwnd, uint uMsg, WPARAM wParam, LPARAM lParam);
+        
+        LRESULT windowHandler(HWND hwnd, uint uMsg, WPARAM wParam, LPARAM lParam) {
+            /*
+             * Handles creational arguments aka the current window 
+             */
+            Window window;
+            switch(uMsg) {
+                case WM_CREATE:
+                    CREATESTRUCTW pCreate = *cast(CREATESTRUCTW*)lParam;
+                    void* pState = pCreate.lpCreateParams;
+                    
+                    version(X86_64) {
+                        SetWindowLongPtrW(hwnd, GWLP_USERDATA, *cast(ulong*)pState);
+                    } else {
+                        SetWindowLongW(hwnd, GWLP_USERDATA, *cast(uint*)pState);
+                    }
 
                     return cast(LRESULT)0;
-					
-				default:
-					version(X86_64) {
-						window = cast(Window)cast(ulong*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
-					} else {
-						window = cast(Window)cast(uint*)GetWindowLongW(hwnd, GWLP_USERDATA);
-					}
-			}
-			
-			/*
-			 * Normal flow handling 
-			 */
-			switch(uMsg) {
-				case WM_DESTROY:
-					PostQuitMessage(0);
-					return cast(LRESULT)0;
-					
-				case WM_PAINT:
+                    
+                default:
+                    version(X86_64) {
+                        window = cast(Window)cast(ulong*)GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+                    } else {
+                        window = cast(Window)cast(uint*)GetWindowLongW(hwnd, GWLP_USERDATA);
+                    }
+            }
+            
+            /*
+             * Normal flow handling 
+             */
+            switch(uMsg) {
+                case WM_DESTROY:
+                    PostQuitMessage(0);
+                    return cast(LRESULT)0;
+                    
+                case WM_PAINT:
                     if (window.context_ is null) {
                         if ((window.config_.contextType | WindowContextType.Opengl3Plus) || (window.config_.contextType | WindowContextType.OpenglLegacy)) {
                             window.context_ = new OpenglContext(window, window.config_);
@@ -419,16 +419,16 @@ private {
                         }
                     }
                     window.onDraw();
-					return cast(LRESULT)0;
-					
-				case WM_SIZE:
-					window.onResize(LOWORD(lParam), HIWORD(lParam));
-					return cast(LRESULT)0;
-					
-				case WM_MOVE:
-					window.onMove(LOWORD(lParam), HIWORD(lParam));
-					return cast(LRESULT)0;
-					
+                    return cast(LRESULT)0;
+                    
+                case WM_SIZE:
+                    window.onResize(LOWORD(lParam), HIWORD(lParam));
+                    return cast(LRESULT)0;
+                    
+                case WM_MOVE:
+                    window.onMove(LOWORD(lParam), HIWORD(lParam));
+                    return cast(LRESULT)0;
+                    
                 case WM_LBUTTONDOWN:
                     window.onMouseDown(MouseButtons.Left, LOWORD(lParam), HIWORD(lParam));
                     return cast(LRESULT)0;
@@ -469,11 +469,11 @@ private {
                     return cast(LRESULT)0;
 
                 default:
-					break;
-			}
-			return DefWindowProcW(hwnd, uMsg, wParam, lParam);
-		}
-	}
+                    break;
+            }
+            return DefWindowProcW(hwnd, uMsg, wParam, lParam);
+        }
+    }
 
     Keys convertWinKeys(uint code) {
         switch (code)

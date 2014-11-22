@@ -31,27 +31,27 @@ public import devisualization.window.interfaces.context : WindowContextType, ICo
 import std.conv : to;
 
 class Window : Windowable {
-	private {
-	    int cocoaId;
+    private {
+        int cocoaId;
         bool hasBeenClosed_;
         IContext context_;
         
         ubyte* iconImageData_;
-	}
+    }
 
-	this(T...)(T config) { this(WindowConfig(config)); } 
+    this(T...)(T config) { this(WindowConfig(config)); } 
 
-	this(WindowConfig config) {
-		synchronized {
-		    if (!hasBeenSetup) {
-		        cocoaInit();
-		        hasBeenSetup = true;
-		    }
-		    
-		    string titleValue = to!string(config.title) ~ "\0";
-		    cocoaId = cocoaCreateWindow(CocoaWindowData(config.x, config.y, config.width, config.height, cast(char*)&titleValue[0]));
-			dispToInsts[cocoaId] = this;
-		}
+    this(WindowConfig config) {
+        synchronized {
+            if (!hasBeenSetup) {
+                cocoaInit();
+                hasBeenSetup = true;
+            }
+            
+            string titleValue = to!string(config.title) ~ "\0";
+            cocoaId = cocoaCreateWindow(CocoaWindowData(config.x, config.y, config.width, config.height, cast(char*)&titleValue[0]));
+            dispToInsts[cocoaId] = this;
+        }
 
         if ((config.contextType | WindowContextType.Opengl3Plus) || (config.contextType | WindowContextType.OpenglLegacy)) {
             // create Opengl context!
@@ -61,72 +61,72 @@ class Window : Windowable {
             throw new Exception("Cannot create Direct3D context on non Windows targets");
         }
     }
-	
-	static {
-		void messageLoop() {
-			import core.thread : Thread;
-			import core.time : dur;
-			
-			while(true) {
+    
+    static {
+        void messageLoop() {
+            import core.thread : Thread;
+            import core.time : dur;
+            
+            while(true) {
                 Window.messageLoopIteration();
-				Thread.sleep(dur!"msecs"(250));
-			}
-		}
-		
-		void messageLoopIteration() {
+                Thread.sleep(dur!"msecs"(250));
+            }
+        }
+        
+        void messageLoopIteration() {
             cocoaRunLoopIterate();
-		}
-	}
-	
-	@property {		
-		void title(string value)
+        }
+    }
+    
+    @property {        
+        void title(string value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaSetTitle(cocoaId, cast(char*)(value ~ "\0").ptr);
-		}
-		
-		void title(dstring value)
+            cocoaSetTitle(cocoaId, cast(char*)(value ~ "\0").ptr);
+        }
+        
+        void title(dstring value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			title(to!string(value));
-		}
-		
-		void title(wstring value)
+            title(to!string(value));
+        }
+        
+        void title(wstring value)
         in {
             assert(!hasBeenClosed_);
         } body {
-			title(to!string(value));
-		}
-		
-		void size(uint width, uint height)
+            title(to!string(value));
+        }
+        
+        void size(uint width, uint height)
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaSetSize(cocoaId, width, height);
-		}
-		
-		void move(int x, int y)
+            cocoaSetSize(cocoaId, width, height);
+        }
+        
+        void move(int x, int y)
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaSetPosition(cocoaId, x, y);
-		}
-		
+            cocoaSetPosition(cocoaId, x, y);
+        }
+        
         void canResize(bool can = true)
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaCanResize(cocoaId, cast(uint)can);
-		}
-		
-		void fullscreen(bool isfs = true)
+            cocoaCanResize(cocoaId, cast(uint)can);
+        }
+        
+        void fullscreen(bool isfs = true)
         in {
             assert(!hasBeenClosed_);
         } body {
             cocoaFullScreen(cocoaId, cast(int)isfs);
-		}
+        }
 
         void close()
         in {
@@ -147,22 +147,22 @@ class Window : Windowable {
         }
 
         bool hasBeenClosed() { return hasBeenClosed_; }
-	}
-	
-	override {
-		void show()
+    }
+    
+    override {
+        void show()
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaShowWindow(cocoaId);
-		}
-		
-		void hide()
+            cocoaShowWindow(cocoaId);
+        }
+        
+        void hide()
         in {
             assert(!hasBeenClosed_);
         } body {
-			cocoaHideWindow(cocoaId);
-		}
+            cocoaHideWindow(cocoaId);
+        }
 
         void icon(Image image)
         in {
@@ -176,18 +176,18 @@ class Window : Windowable {
         }
 
         deprecated("Use Devisualization.Image method instead")
-		void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
-		in {
+        void icon(ushort width, ushort height, ubyte[3][] idata, ubyte[3]* transparent = null)
+        in {
             assert(!hasBeenClosed_);
-			assert(width * height == data.length, "Icon pixels length must be equal to width * height");
-		} body {
-		    import core.memory;
-		
-    		GC.free(iconImageData_);
-    		iconImageData_ = cast(ubyte*)GC.malloc(width * height * 4);
-    		
-    		size_t done = 0;
-    		
+            assert(width * height == data.length, "Icon pixels length must be equal to width * height");
+        } body {
+            import core.memory;
+        
+            GC.free(iconImageData_);
+            iconImageData_ = cast(ubyte*)GC.malloc(width * height * 4);
+            
+            size_t done = 0;
+            
             foreach(datem; idata) {
                 iconImageData_[done + 0] = datem[0];
                 iconImageData_[done + 1] = datem[1];
@@ -206,11 +206,11 @@ class Window : Windowable {
             }
 
             cocoaSetIcon(cocoaId, &iconImageData_, width, height);
-		}
-	}
-	
-	mixin Eventing!("onDraw", Windowable);
-	mixin Eventing!("onMove", Windowable, int, int);
+        }
+    }
+    
+    mixin Eventing!("onDraw", Windowable);
+    mixin Eventing!("onMove", Windowable, int, int);
     mixin Eventing!("onResize", Windowable, uint, uint);
     mixin Eventing!("onClose", Windowable);
 

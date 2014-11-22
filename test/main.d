@@ -28,16 +28,16 @@ import devisualization.image.mutable;
 import std.stdio;
 
 void main() {
-	Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.OpenglLegacy);
-	window.show();
-	
-	window.size(200, 200);
+    Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.OpenglLegacy);
+    window.show();
+    
+    window.size(200, 200);
     window.move(200, 200);
 
-	window.addOnDraw((Windowable window2) {
-		//writeln("drawing");
+    window.addOnDraw((Windowable window2) {
+        //writeln("drawing");
 
-		Window window = cast(Window)window2;
+        Window window = cast(Window)window2;
         IContext context = window.context;
         if (context !is null) {
             writeln("has context");
@@ -47,7 +47,7 @@ void main() {
         } else {
             //writeln("has not got context");
         }
-		version(Windows) {
+        version(Windows) {
             if (context !is null && context.type == WindowContextType.Opengl) {
                 import derelict.opengl3.gl;
                 glLoadIdentity();
@@ -66,38 +66,38 @@ void main() {
             } else if (context !is null && context.type == WindowContextType.Direct3D) {
             } else {
             }
-		} else version(linux) {
-			import xlib = x11.Xlib;
-			import xx11 = x11.X;
-			
-			xlib.Window root;
-			int x, y;
-			uint width, height, border, depth;
-			
-			auto x11Window = window.x11Window;
-			auto x11Display = window.x11Display;
-			auto x11Screen = window.x11Window;
-			auto x11ScreenNumber = window.x11ScreenNumber;
-			
-			xlib.XGetGeometry(x11Display, x11Window, &root, &x, &y, &width, &height, &border, &depth);
-			
-			xlib.GC gc;
-			xlib.XColor color;
-			xlib.Colormap colormap;
-			
-			colormap = xlib.DefaultColormap(x11Display, x11ScreenNumber);
-			gc = xlib.XCreateGC(x11Display, x11Window, 0, null);
-			
-			xlib.XParseColor(x11Display, colormap, cast(char*)"#777777\0".ptr, &color);
-			xlib.XAllocColor(x11Display, colormap, &color);
-			
-			xlib.XSetForeground(x11Display, gc, color.pixel);
-			
-			xlib.XFillRectangle(window.x11Display, window.x11Window, gc, 0, 0, width, height);
-			
-			xlib.XFreeGC(x11Display, gc);
-		} else version(OSX) {
-		    if (context !is null && context.type == WindowContextType.Opengl) {
+        } else version(linux) {
+            import xlib = x11.Xlib;
+            import xx11 = x11.X;
+            
+            xlib.Window root;
+            int x, y;
+            uint width, height, border, depth;
+            
+            auto x11Window = window.x11Window;
+            auto x11Display = window.x11Display;
+            auto x11Screen = window.x11Window;
+            auto x11ScreenNumber = window.x11ScreenNumber;
+            
+            xlib.XGetGeometry(x11Display, x11Window, &root, &x, &y, &width, &height, &border, &depth);
+            
+            xlib.GC gc;
+            xlib.XColor color;
+            xlib.Colormap colormap;
+            
+            colormap = xlib.DefaultColormap(x11Display, x11ScreenNumber);
+            gc = xlib.XCreateGC(x11Display, x11Window, 0, null);
+            
+            xlib.XParseColor(x11Display, colormap, cast(char*)"#777777\0".ptr, &color);
+            xlib.XAllocColor(x11Display, colormap, &color);
+            
+            xlib.XSetForeground(x11Display, gc, color.pixel);
+            
+            xlib.XFillRectangle(window.x11Display, window.x11Window, gc, 0, 0, width, height);
+            
+            xlib.XFreeGC(x11Display, gc);
+        } else version(OSX) {
+            if (context !is null && context.type == WindowContextType.Opengl) {
                 import derelict.opengl3.gl;
                 glLoadIdentity();
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -113,17 +113,17 @@ void main() {
                 glVertex2f(100, 100);
                 glEnd();
             }
-		}
-	});
-	
-	window.addOnMove((Windowable window, int x, int y) {
-		writeln("move: ", x, ", ", y);
-	});
-	
-	window.addOnResize((Windowable window, uint width, uint height) {
-		writeln("resize: ", width, " x ", height);
-	});
-	
+        }
+    });
+    
+    window.addOnMove((Windowable window, int x, int y) {
+        writeln("move: ", x, ", ", y);
+    });
+    
+    window.addOnResize((Windowable window, uint width, uint height) {
+        writeln("resize: ", width, " x ", height);
+    });
+    
     window.addOnMouseDown((Windowable window, MouseButtons button, int x, int y) {
         writeln("mouse down ", button, " x=", x, ", y=", y);
     });
@@ -155,7 +155,7 @@ void main() {
    
     //window.fullscreen(true);
 
-	//Window.messageLoop();
+    //Window.messageLoop();
     while(true) {
         import core.thread : Thread;
         import core.time : dur;
