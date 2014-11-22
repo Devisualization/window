@@ -170,9 +170,10 @@ class Window : Windowable {
             assert(image !is null);
         } body {
             import devisualization.image;
+            import core.memory;
             GC.free(iconImageData_);
             iconImageData_ = cast(ubyte*)ubyteRawColor(image.rgba.allPixels).ptr;
-            cocoaSetIcon(cocoaId, &iconImageData_, image.width, image.height);
+            cocoaSetIcon(cocoaId, &iconImageData_, cast(int)image.width, cast(int)image.height);
         }
 
         deprecated("Use Devisualization.Image method instead")
