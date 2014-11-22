@@ -213,8 +213,8 @@ class Window : Windowable {
                 data ~= [pixel.b_ubyte, pixel.g_ubyte, pixel.r_ubyte, pixel.a_ubyte];
             }
 
-            HBITMAP bitmap = CreateBitmap(image.width, image.height, 1, 32, data.ptr);
-            HBITMAP hbmMask = CreateCompatibleBitmap(GetDC(hwnd_), image.width, image.height);
+            HBITMAP bitmap = CreateBitmap(cast(uint)image.width, cast(uint)image.height, 1, 32, data.ptr);
+            HBITMAP hbmMask = CreateCompatibleBitmap(GetDC(hwnd_), cast(uint)image.width, cast(uint)image.height);
             
             ICONINFO ii;
             ii.fIcon = TRUE;
