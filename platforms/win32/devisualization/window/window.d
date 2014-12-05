@@ -32,8 +32,6 @@ import std.conv : to;
 
 class Window : Windowable {
     private {
-        alias size_t = object.size_t; // windows also declares size_t, force it to be from druntime.
-
         HWND hwnd_;
         HICON previousIcon_;
         wstring lastTitle;

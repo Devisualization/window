@@ -5,7 +5,6 @@ const WS_SIZEBOX = WS_THICKFRAME;
 
 //C      typedef unsigned long long size_t;
 extern (System):
-alias ulong size_t;
 //C      typedef long long ssize_t;
 alias long ssize_t;
 //C      typedef long long intptr_t;
