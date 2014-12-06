@@ -102,8 +102,10 @@ class Window : Windowable {
         in {
             assert(!hasBeenClosed_);
         } body {
-            if (value[$-1] != '\0')
+            if (value != ""w && value[$-1] != '\0')
                 value ~= '\0';
+			else if (value == "")
+				value = "\0";
             lastTitle = value;
             
             SetWindowTextW(hwnd_, cast(ushort*)lastTitle.ptr);
