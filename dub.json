@@ -5,6 +5,7 @@
     "authors": ["Richard Andrew Cattermole"],
     "homepage": "https://github.com/Devisualization/window",
     "license": "MIT",
+    "targetType": "none",
     "sourcePaths": [],
     "subPackages": [
         {
