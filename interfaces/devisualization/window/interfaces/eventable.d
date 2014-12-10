@@ -41,7 +41,7 @@ mixin template IEventing(string name, T...) {
     mixin("size_t count" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ "();");
 
     mixin("void " ~ name ~ q{(T args);});
-    mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(T args);});
+    mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{();});
     
     static if (T.length > 0) {
         static if (__traits(compiles, typeof(this)) && is(typeof(this) : T[0])) {
@@ -92,7 +92,7 @@ mixin template Eventing(string name, T...) {
             }
         }});
     
-    mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(T args) {
+    mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{() {
             mixin(name ~ "_") = [];
         }});
     
