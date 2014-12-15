@@ -1,7 +1,7 @@
 Devisualization Window Toolkit
 ===
 Window creational toolkit, cross platform. Written in D.<br/>
-Depends on Derelict-GL3 for Opengl support.
+Depends on Derelict-GL3 for Opengl support.<br/>
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/window?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Features
