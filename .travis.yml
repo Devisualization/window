@@ -1,7 +1,9 @@
-language: d
+language:
+  - d
+  - objective-c
 install:
-- sudo apt-get update -q
-- sudo apt-get install -y libxrandr-dev
+  - sudo apt-get update -q
+  - sudo apt-get install -y libxrandr-dev
 matrix:
   allow_failures:
   - d: dmd-2.065.0
@@ -18,6 +20,7 @@ matrix:
     - sudo apt-get install libstdc++6
     - ldc2 --version
   - objective-c:
+      os: osx
       xcode_project: cocoa_library/project/dwc-osx.xcodeproj
       xcode_scheme: dwc-osx
       after_script: "./cocoa_library/copyToGithubPages.sh"
