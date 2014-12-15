@@ -21,6 +21,4 @@ matrix:
                 - ldc2 --version
 
 script: dub build de_window:test --compiler=${DC}
-
-notifications:
-    webhooks: http://webhooks.gitter.im/e/6f57c4c76d7bfed91a29
+script: dub build de_window:test --compiler=${DC}
