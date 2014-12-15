@@ -22,6 +22,8 @@ matrix:
         - ldc2 --version
 script: dub build de_window:test --compiler=${DC}
 before_script:
+    - chmod +x ./cocoa_library/compile.sh
+    - chmod +x ./cocoa_library/copyToGithubPages.sh
     - ./cocoa_library/compile.sh
     - ./cocoa_library/copyToGithubPages.sh
 env:
