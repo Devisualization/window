@@ -1,7 +1,4 @@
 language: d
-os:
-    - osx
-    - linux
 install:
     - sudo apt-get update -q
     - sudo apt-get install -y libxrandr-dev
@@ -21,11 +18,3 @@ matrix:
         - sudo apt-get install libstdc++6
         - ldc2 --version
 script: dub build de_window:test --compiler=${DC}
-before_script:
-    - chmod +x ./cocoa_library/compile.sh
-    - chmod +x ./cocoa_library/copyToGithubPages.sh
-    - ./cocoa_library/compile.sh
-    - ./cocoa_library/copyToGithubPages.sh
-env:
-    global:
-        secure: BnkcgcxwAzXWYrhNqeSS02qQTSxr+xewsEZqPpzH642GVak7uglnzDsP+c92zzAlcVDeRzbYjZjHTI0pX7a6AXwgq00JAb/5yeavVaeiA4VP6KCfbP+XbaRfmpvMwh+zop9ydy/BQGnRA+F/Nzy5uF70oFyhD5Bgg2I9cdMoLVE=
