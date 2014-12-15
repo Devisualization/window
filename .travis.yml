@@ -5,12 +5,12 @@ install:
     - sudo apt-get install libxrandr-dev
 matrix:
     allow_failures:
-        - d: dmd-2.065
+        - d: dmd-2.065.0
         - d: gdc-4.8.2
         - d: ldc-0.14.0
     include:
         - d: dmd-2.066.1
-        - d: dmd-2.065
+        - d: dmd-2.065.0
         - d: gdc-4.8.2
         - d: ldc-0.14.0
 script: dub build de_window:test --compiler=${DC}
