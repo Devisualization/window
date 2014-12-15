@@ -1,24 +1,27 @@
 language: d
-
 install:
-    - sudo apt-get update -q
-    - sudo apt-get install -y libxrandr-dev
+- sudo apt-get update -q
+- sudo apt-get install -y libxrandr-dev
 matrix:
-    allow_failures:
-        - d: dmd-2.065.0
-        - d: gdc-4.8.2
-        - d: ldc-0.15.0-beta1
-    include:
-        - d: dmd-2.066.1
-        - d: dmd-2.065.0
-        - d: gdc-4.8.2
-        - 
-            d: ldc-0.15.0-beta1
-            install:
-                - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-                - sudo apt-get update -q
-                - sudo apt-get install libstdc++6
-                - ldc2 --version
-
+  allow_failures:
+  - d: dmd-2.065.0
+  - d: gdc-4.8.2
+  - d: ldc-0.15.0-beta1
+  include:
+  - d: dmd-2.066.1
+  - d: dmd-2.065.0
+  - d: gdc-4.8.2
+  - d: ldc-0.15.0-beta1
+    install:
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+    - sudo apt-get update -q
+    - sudo apt-get install libstdc++6
+    - ldc2 --version
+  - objective-c:
+      xcode_project: cocoa_library/project/dwc-osx.xcodeproj
+      xcode_scheme: dwc-osx
+      after_script: "./cocoa_library/copyToGithubPages.sh"
 script: dub build de_window:test --compiler=${DC}
-script: dub build de_window:test --compiler=${DC}
+env:
+  global:
+    secure: BnkcgcxwAzXWYrhNqeSS02qQTSxr+xewsEZqPpzH642GVak7uglnzDsP+c92zzAlcVDeRzbYjZjHTI0pX7a6AXwgq00JAb/5yeavVaeiA4VP6KCfbP+XbaRfmpvMwh+zop9ydy/BQGnRA+F/Nzy5uF70oFyhD5Bgg2I9cdMoLVE=
