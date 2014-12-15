@@ -4,14 +4,14 @@ install:
     - sudo apt-get install -y libxrandr-dev
 matrix:
     allow_failures:
+        # dmd FE 2.065
         - d: dmd-2.065.0
         - d: gdc-4.8.2
-        - d: ldc-0.15.0-beta1
     include:
         - d: dmd-2.066.1
         - d: dmd-2.065.0
         - d: gdc-4.8.2
-        - d: ldc-0.15.0-beta1
+        - d: ldc-0.15.1
     install:
         - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         - sudo apt-get update -q
