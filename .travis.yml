@@ -1,8 +1,8 @@
 before_install:
-	- sudo apt-get update
-	- sudo apt-get install libxrandr-dev
+    - sudo apt-get update
+    - sudo apt-get install libxrandr-dev
 d:
-	- dmd-2.066.1
-	- gdc-4.8.2
-	- ldc-0.14.0
+    - dmd-2.066.1
+    - gdc-4.8.2
+    - ldc-0.14.0
 script: dub build de_window:test --compiler=${DC}
