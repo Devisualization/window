@@ -1,10 +1,8 @@
 Devisualization Window Toolkit
 ===
-
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/window?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 Window creational toolkit, cross platform. Written in D.<br/>
 Depends on Derelict-GL3 for Opengl support.
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/window?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Features
 --------
