@@ -42,8 +42,9 @@ void main() {
   }
 }
 ```
-Thread sleep is optional, as messageLoopIteration is blocking.<br/>
+Thread sleep is optional, as messageLoopIteration is blocking but may not wait for a message.<br/>
 However it should be one draw per x time units. For most efficient loop.
+During the drawing, check if you have a valid context. OnDraw may occur while there is no valid context.
 
 TODO
 -----
