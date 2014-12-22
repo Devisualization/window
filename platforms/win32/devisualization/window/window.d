@@ -60,19 +60,15 @@ class Window : Windowable {
             }
         }
 
-        bool messageLoopIteration()
-        out {
-            import std.stdio : stdout;
-            stdout.flush(); // issue on windows. Will not auto flush if we control the event queue.
-        } body {
-            MSG* msg;
-            int ret = GetMessageW(msg, null, 0, 0);
-            
-            if (ret == 0 || ret == -1 || msg is null)
-                return false;
-            
-            TranslateMessage(msg);
-            DispatchMessageW(msg);
+        bool messageLoopIteration() {
+			MSG msg;
+			int ret = PeekMessageW(&msg, null, 0, 0, PM_REMOVE);
+
+            if (ret == 0)
+				return false;
+
+            TranslateMessage(&msg);
+            DispatchMessageW(&msg);
 
 			return true;
         }
