@@ -68,13 +68,13 @@ class Window : Windowable {
             import core.time : dur;
             
             while(true) {
-                Window.messageLoopIteration();
-                Thread.sleep(dur!"msecs"(250));
+				while(Window.messageLoopIteration()){}
+                Thread.sleep(dur!"msecs"(50));
             }
         }
         
-        void messageLoopIteration() {
-            cocoaRunLoopIterate();
+        bool messageLoopIteration() {
+			return cast(bool)cocoaRunLoopIterate();
         }
     }
     

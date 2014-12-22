@@ -55,24 +55,26 @@ class Window : Windowable {
             import core.time : dur;
             
             while(true) {
-                Window.messageLoopIteration();
-                Thread.sleep(dur!"msecs"(250));
+				while(Window.messageLoopIteration()) {}
+                Thread.sleep(dur!"msecs"(50));
             }
         }
 
-        void messageLoopIteration()
+        bool messageLoopIteration()
         out {
             import std.stdio : stdout;
-            stdout.flush();
+            stdout.flush(); // issue on windows. Will not auto flush if we control the event queue.
         } body {
             MSG msg;
             int ret = GetMessageW(&msg, null, 0, 0);
             
             if (ret == 0 || ret == -1)
-                return;
+                return false;
             
             TranslateMessage(&msg);
             DispatchMessageW(&msg);
+
+			return true;
         }
     }
     

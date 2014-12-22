@@ -82,14 +82,18 @@ class Window : Windowable {
             import core.time : dur;
             
             while(true) {
-                Window.messageLoopIteration();
-                Thread.sleep(dur!"msecs"(250));
+				while(Window.messageLoopIteration()) {}
+                Thread.sleep(dur!"msecs"(50));
             }
         }
         
-        void messageLoopIteration() {
+        bool messageLoopIteration() {
             xlib.XEvent e;
             
+			if (xlib.XPending(display_) <= 0) {
+				return false;
+			}
+
             xlib.XNextEvent(display_, &e);
             if (e.type == xx11.Expose) {
                 if (e.xexpose.window in dispToInsts) {
@@ -202,7 +206,9 @@ class Window : Windowable {
                     }
                 }
             }
-        }
+
+			return true;
+		}
     }
     
     @property {
