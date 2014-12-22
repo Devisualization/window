@@ -64,6 +64,7 @@ class OpenglContext : IContext {
         }
         
         void swapBuffers() {
+			glFlush();
             cocoaSwapOGLBuffers(cocoaId);
         }
 

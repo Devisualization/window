@@ -65,7 +65,8 @@ class OpenglContext : IContext {
         }
 
         void swapBuffers() {
-            SwapBuffers(hdc_);
+			glFlush();
+			SwapBuffers(hdc_);
         }
 
         WindowContextType type() { return WindowContextType.Opengl; }
