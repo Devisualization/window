@@ -29,7 +29,7 @@
             "libs-linux": ["Xrandr"],
             
             "dependencies-linux": {
-                "x11": ">=1.0.0"
+                "x11": ">=1.0.3"
             },
             
             "sourcePaths-osx": ["platforms/macosx"],
