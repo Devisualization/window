@@ -61,14 +61,14 @@ class Window : Windowable {
         }
 
         bool messageLoopIteration() {
-			MSG* msg;
-			int ret = PeekMessageW(msg, null, 0, 0, PM_REMOVE);
+			MSG msg;
+			int ret = PeekMessageW(&msg, null, 0, 0, PM_REMOVE);
 
             if (ret == 0)
 				return false;
 
-            TranslateMessage(msg);
-            DispatchMessageW(msg);
+            TranslateMessage(&msg);
+            DispatchMessageW(&msg);
 
 			return true;
         }
