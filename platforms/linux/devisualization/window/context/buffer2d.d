@@ -35,7 +35,7 @@ class Buffer2DContext : ContextBuffer2D {
 
 		Window window;
 		xlib.Display* display;
-		xlib.Window* x11win;
+		xlib.Window x11win;
 		xlib.Pixmap pixmap;
 		
 		Image buffer_;
@@ -44,8 +44,8 @@ class Buffer2DContext : ContextBuffer2D {
 	
 	this(Window window, WindowConfig config) {
 		this.window = window;
-		x11win = &window.x11Window();
-		display = &window.x11Display();
+		x11win = window.x11Window();
+		display = window.x11Display();
 		
 		pixmap = xlib.XCreatePixmap(display, *x11win, config.width, config.height, 24);
 		
@@ -71,8 +71,8 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				xlib.XImage* theImage = xlib.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
-				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
+				xlib.XImage* theImage = xlib.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
+				xlib.XPutImage(display, cast(xx11.XVisual*)&x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height);
 
 				xlib.XSetWindowBackgroundPixmap(display, x11win, pixmap);
 				xutil.XDestroyImage(theImage);
