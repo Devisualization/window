@@ -71,7 +71,7 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				xlib.XImage* theImage = xlib.XCreateImage(display, &pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
+				xlib.XImage* theImage = xlib.XCreateImage(display, cast(xlib.Visual*)&pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
 				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height);
 
 				xlib.XSetWindowBackgroundPixmap(display, x11win, pixmap);
