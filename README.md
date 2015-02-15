@@ -13,6 +13,7 @@ Features
 * Mouse left/right/middle down/up
 * Window Icon, Text
 * OpenGL (both legacy and 3+) creation (Windows, X11, OSX (Cocoa))
+* 2D image buffer drawing context
 
 Example
 -------
@@ -49,7 +50,11 @@ During the drawing, check if you have a valid context. OnDraw may occur while th
 TODO
 -----
 * Confirm prevent close works on Windows and X11
-* Make sure icons work on Posix
-* Make sure full screen works correctly on Posix (tempermental on XFCE)
 * Context creation (Direct3D on Windows)
 * On window redisplay(undo of minimise)/maximise/minimise
+* Confirm Buffer2d context works on Posix
+* Implement Buffer2d context on OSX
+
+X11 based window manager weird behaviours:
+* Make sure icons work on Posix
+* Make sure full screen works correctly on Posix (tempermental on XFCE)
