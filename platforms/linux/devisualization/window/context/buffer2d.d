@@ -31,12 +31,11 @@ class Buffer2DContext : ContextBuffer2D {
 	private {
 		import xx11 = x11.X;
         import xlib = x11.Xlib;
-		import dglx = derelict.opengl3.glx;
 
 		Window window;
 		xlib.Display* display;
 		xlib.Window* x11win;
-		dxtypes.XVisualInfo* vi;
+		xlib.Pixmap* pixmap;
 		
 		Image buffer_;
 		ubyte[4][] bufferdata;
@@ -47,8 +46,7 @@ class Buffer2DContext : ContextBuffer2D {
 		x11win = window.x11window;
 		display = window.x11Display;
 		
-		int[] att = [dglx.GLX_RGBA, dglx.GLX_DEPTH_SIZE, 24, dglx.GLX_DOUBLEBUFFER, xx11.None];
-        vi = dglx.glXChooseVisual(display, 0, att.ptr);
+		pixmap = xx11.XCreatePixmap(display, x11win, config.width, config.height, 24);
 		
 		buffer_ = null;
 		activate();
@@ -57,7 +55,9 @@ class Buffer2DContext : ContextBuffer2D {
 	@property {
 		void activate() {}
 		
-		void destroy() {}
+		void destroy() {
+			xx11.XFree(pixmap);
+		}
 		
 		void swapBuffers() {
 			if (buffer_ !is null) {
@@ -72,10 +72,11 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				xlib.XImage* theImage = XCreateImage(display, vi, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
-				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
+				xlib.XImage* theImage = xx11.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
+				xx11.XPutImage(display, x11win, xx11.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
 
-				XDestroyImage(theImage);
+				xx11.XSetWindowBackgroundPixmap(display, x11win, pixmap);
+				xx11.XDestroyImage(theImage);
 			}
 		}
 		
