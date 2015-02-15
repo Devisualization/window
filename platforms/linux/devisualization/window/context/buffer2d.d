@@ -30,7 +30,8 @@ class Buffer2DContext : ContextBuffer2D {
 	
 	private {
 		import xx11 = x11.X;
-        import xlib = x11.Xlib;
+		import xlib = x11.Xlib;
+		import xutil = x11.Xutil;
 
 		Window window;
 		xlib.Display* display;
@@ -43,10 +44,10 @@ class Buffer2DContext : ContextBuffer2D {
 	
 	this(Window window, WindowConfig config) {
 		this.window = window;
-		x11win = window.x11window;
+		x11win = window.x11Window;
 		display = window.x11Display;
 		
-		pixmap = xx11.XCreatePixmap(display, x11win, config.width, config.height, 24);
+		pixmap = xlib.XCreatePixmap(display, x11win, config.width, config.height, 24);
 		
 		buffer_ = null;
 		activate();
@@ -56,7 +57,7 @@ class Buffer2DContext : ContextBuffer2D {
 		void activate() {}
 		
 		void destroy() {
-			xx11.XFree(pixmap);
+			xlib.XFree(pixmap);
 		}
 		
 		void swapBuffers() {
@@ -72,11 +73,11 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				xlib.XImage* theImage = xx11.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
-				xx11.XPutImage(display, x11win, xx11.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
+				xlib.XImage* theImage = xlib.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
+				xlib.XPutImage(display, x11win, xx11.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
 
-				xx11.XSetWindowBackgroundPixmap(display, x11win, pixmap);
-				xx11.XDestroyImage(theImage);
+				xlib.XSetWindowBackgroundPixmap(display, x11win, pixmap);
+				xutil.XDestroyImage(theImage);
 			}
 		}
 		

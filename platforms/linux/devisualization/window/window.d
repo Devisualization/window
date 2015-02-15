@@ -67,7 +67,7 @@ class Window : Windowable {
         
         title = config.title;
 
-		if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
+		if ((config.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (config.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
             // create Opengl context!
             context_ = new OpenglContext(this, config);
         } else if (config.contextType == WindowContextType.Direct3D) {
