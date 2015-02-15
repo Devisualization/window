@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.window.context;
+module devisualization.window.context.opengl;
 import devisualization.window.window;
 import devisualization.window.interfaces.context;
 

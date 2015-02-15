@@ -53,13 +53,15 @@ class Window : Windowable {
             dispToInsts[cocoaId] = this;
         }
 
-		if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
+		if ((config.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (config.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
             // create Opengl context!
             context_ = new OpenglContext(this, config, cocoaId);
         } else if (config.contextType == WindowContextType.Direct3D) {
             // create Direct3d context!
             throw new Exception("Cannot create Direct3D context on non Windows targets");
-        }
+        } else if (config.contextType == WindowContextType.Buffer2D) {
+			context_ = new Buffer2DContext(this, config, cocoaId);
+		}
     }
     
     static {
