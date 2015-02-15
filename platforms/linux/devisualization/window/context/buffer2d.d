@@ -44,10 +44,10 @@ class Buffer2DContext : ContextBuffer2D {
 	
 	this(Window window, WindowConfig config) {
 		this.window = window;
-		x11win = &window.x11Window;
-		display = &window.x11Display;
+		x11win = &window.x11Window();
+		display = &window.x11Display();
 		
-		pixmap = xlib.XCreatePixmap(display, x11win, config.width, config.height, 24);
+		pixmap = xlib.XCreatePixmap(display, *x11win, config.width, config.height, 24);
 		
 		buffer_ = null;
 		activate();
@@ -56,9 +56,7 @@ class Buffer2DContext : ContextBuffer2D {
 	@property {
 		void activate() {}
 		
-		void destroy() {
-			xlib.XFree(pixmap);
-		}
+		void destroy() {}
 		
 		void swapBuffers() {
 			if (buffer_ !is null) {
