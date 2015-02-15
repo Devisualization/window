@@ -34,9 +34,9 @@ class Buffer2DContext : ContextBuffer2D {
 		import xutil = x11.Xutil;
 
 		Window window;
-		xlib.Display display;
+		xlib.Display* display;
 		xlib.Window* x11win;
-		xlib.Pixmap* pixmap;
+		xlib.Pixmap pixmap;
 		
 		Image buffer_;
 		ubyte[4][] bufferdata;
@@ -44,8 +44,8 @@ class Buffer2DContext : ContextBuffer2D {
 	
 	this(Window window, WindowConfig config) {
 		this.window = window;
-		x11win = window.x11Window;
-		display = window.x11Display;
+		x11win = &window.x11Window;
+		display = &window.x11Display;
 		
 		pixmap = xlib.XCreatePixmap(display, x11win, config.width, config.height, 24);
 		
