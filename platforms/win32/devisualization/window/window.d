@@ -406,7 +406,6 @@ private {
              */
             switch(uMsg) {
                 case WM_DESTROY:
-                    PostQuitMessage(0);
                     return cast(LRESULT)0;
                     
                 case WM_PAINT:
