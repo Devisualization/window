@@ -67,9 +67,9 @@ class Buffer2DContext : ContextBuffer2D {
 				bufferdata.length = buffer_.rgba.length;
 				
 				foreach(i, pixel; buffer_.rgba.allPixels) {
-					bufferdata[i][0] = pixel.b_ubyte;
+					bufferdata[i][0] = pixel.r_ubyte;
 					bufferdata[i][1] = pixel.g_ubyte;
-					bufferdata[i][2] = pixel.r_ubyte;
+					bufferdata[i][2] = pixel.b_ubte;
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
