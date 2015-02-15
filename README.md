@@ -53,7 +53,6 @@ TODO
 * Context creation (Direct3D on Windows)
 * On window redisplay(undo of minimise)/maximise/minimise
 * Confirm Buffer2d context works on Posix
-* Implement Buffer2d context on OSX
 
 X11 based window manager weird behaviours:
 * Make sure icons work on Posix

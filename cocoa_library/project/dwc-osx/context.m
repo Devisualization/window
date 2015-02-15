@@ -23,6 +23,10 @@
  */
 #import "dwc_cocoa.h"
 
+/*
+ * OpenGL
+ */
+
 static NSOpenGLPixelFormatAttribute glAttributesLegacy[] = {
     NSOpenGLPFADoubleBuffer,
     NSOpenGLPFADepthSize, 32,
@@ -65,4 +69,45 @@ void cocoaDestroyOGLContext(int id) {
 void cocoaSwapOGLBuffers(int id) {
     NSWindowDWC* window = (NSWindowDWC*)[NSApp windowWithWindowNumber: id];
     [[window openGLContext] flushBuffer];
+}
+
+
+/*
+ * Buffer2D
+ */
+
+void cocoaCreateBuffer2DContext(int id) {}
+
+void cocoaActivateBuffer2DContext(int id) {
+    NSWindow* window = [NSApp windowWithWindowNumber: id];
+    [[window contentView] setWantsLayer:YES];
+}
+
+void cocoaDestroyBuffer2DContext(int id) {
+    NSWindow* window = [NSApp windowWithWindowNumber: id];
+    [[window contentView] setWantsLayer:NO];
+}
+
+void cocoaSwapBuffer2DBuffers(int id, unsigned char** rgba, int width, int height) {
+    NSWindow* window = [NSApp windowWithWindowNumber: id];
+    
+    NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: rgba
+                                                                         pixelsWide: width
+                                                                         pixelsHigh: height
+                                                                      bitsPerSample: 8
+                                                                    samplesPerPixel: 4
+                                                                           hasAlpha: YES
+                                                                           isPlanar: NO
+                                                                     colorSpaceName: NSDeviceRGBColorSpace
+                                                                       bitmapFormat: 0
+                                                                        bytesPerRow: width * 4
+                                                                       bitsPerPixel: 32];
+    
+    [imageRep setSize:NSMakeSize(16, 16)];
+    NSData *data = [imageRep representationUsingType: NSPNGFileType properties: nil];
+    [window setRepresentedURL:[NSURL fileURLWithPath: [window title]]];
+    
+    NSImage* image = [[NSImage alloc] initWithData: data];
+    
+    [[window contentView] layer].contents = image;
 }
