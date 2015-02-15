@@ -23,12 +23,13 @@
  */
 module test.main;
 import devisualization.window.window;
+import devisualization.window.interfaces.context;
 import devisualization.image;
 import devisualization.image.mutable;
 import std.stdio;
 
 void main() {
-    Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.OpenglLegacy);
+    Window window = new Window(800, 600, "My DWC window!"w, 100, 100, WindowContextType.Buffer2D);
     window.show();
     
     window.size(200, 200);
@@ -46,74 +47,83 @@ void main() {
             writeln("shading language version: ", context.shadingLanguageVersion);
         } else {
             //writeln("has not got context");
+			return;
         }
-        version(Windows) {
-            if (context !is null && context.type == WindowContextType.Opengl) {
-                import derelict.opengl3.gl;
-                glLoadIdentity();
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                glColor3f(0f, 1f, 0f);
 
-                glBegin(GL_TRIANGLES);
-                glVertex2f(-100, -100);
-                glVertex2f(100, -100);
-                glVertex2f(100, 100);
+		if (auto hasbuf = cast(ContextBuffer2D)window.context) {
+			foreach(i, p; hasbuf.buffer.rgba) {
+				hasbuf.buffer.rgba[i].r = ushort.max;
+				hasbuf.buffer.rgba[i].a = ushort.max;
+			}
+		} else {
+	        version(Windows) {
+	            if (context.type == WindowContextType.Opengl) {
+	                import derelict.opengl3.gl;
+	                glLoadIdentity();
+	                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	                glColor3f(0f, 1f, 0f);
 
-                glVertex2f(-100, -100);
-                glVertex2f(-100, 100);
-                glVertex2f(100, 100);
-                glEnd();
-            } else if (context !is null && context.type == WindowContextType.Direct3D) {
-            } else {
-            }
-        } else version(linux) {
-            import xlib = x11.Xlib;
-            import xx11 = x11.X;
-            
-            xlib.Window root;
-            int x, y;
-            uint width, height, border, depth;
-            
-            auto x11Window = window.x11Window;
-            auto x11Display = window.x11Display;
-            auto x11Screen = window.x11Window;
-            auto x11ScreenNumber = window.x11ScreenNumber;
-            
-            xlib.XGetGeometry(x11Display, x11Window, &root, &x, &y, &width, &height, &border, &depth);
-            
-            xlib.GC gc;
-            xlib.XColor color;
-            xlib.Colormap colormap;
-            
-            colormap = xlib.DefaultColormap(x11Display, x11ScreenNumber);
-            gc = xlib.XCreateGC(x11Display, x11Window, 0, null);
-            
-            xlib.XParseColor(x11Display, colormap, cast(char*)"#777777\0".ptr, &color);
-            xlib.XAllocColor(x11Display, colormap, &color);
-            
-            xlib.XSetForeground(x11Display, gc, color.pixel);
-            
-            xlib.XFillRectangle(window.x11Display, window.x11Window, gc, 0, 0, width, height);
-            
-            xlib.XFreeGC(x11Display, gc);
-        } else version(OSX) {
-            if (context !is null && context.type == WindowContextType.Opengl) {
-                import derelict.opengl3.gl;
-                glLoadIdentity();
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                glColor3f(0f, 1f, 0f);
+	                glBegin(GL_TRIANGLES);
+	                glVertex2f(-100, -100);
+	                glVertex2f(100, -100);
+	                glVertex2f(100, 100);
 
-                glBegin(GL_TRIANGLES);
-                glVertex2f(-100, -100);
-                glVertex2f(100, -100);
-                glVertex2f(100, 100);
+	                glVertex2f(-100, -100);
+	                glVertex2f(-100, 100);
+	                glVertex2f(100, 100);
+	                glEnd();
+	            } else if (context !is null && context.type == WindowContextType.Direct3D) {
+	            } else {
+	            }
+	        } else version(linux) {
+	            import xlib = x11.Xlib;
+	            import xx11 = x11.X;
+	            
+	            xlib.Window root;
+	            int x, y;
+	            uint width, height, border, depth;
+	            
+	            auto x11Window = window.x11Window;
+	            auto x11Display = window.x11Display;
+	            auto x11Screen = window.x11Window;
+	            auto x11ScreenNumber = window.x11ScreenNumber;
+	            
+	            xlib.XGetGeometry(x11Display, x11Window, &root, &x, &y, &width, &height, &border, &depth);
+	            
+	            xlib.GC gc;
+	            xlib.XColor color;
+	            xlib.Colormap colormap;
+	            
+	            colormap = xlib.DefaultColormap(x11Display, x11ScreenNumber);
+	            gc = xlib.XCreateGC(x11Display, x11Window, 0, null);
+	            
+	            xlib.XParseColor(x11Display, colormap, cast(char*)"#777777\0".ptr, &color);
+	            xlib.XAllocColor(x11Display, colormap, &color);
+	            
+	            xlib.XSetForeground(x11Display, gc, color.pixel);
+	            
+	            xlib.XFillRectangle(window.x11Display, window.x11Window, gc, 0, 0, width, height);
+	            
+	            xlib.XFreeGC(x11Display, gc);
+	        } else version(OSX) {
+	            if (context.type == WindowContextType.Opengl) {
+	                import derelict.opengl3.gl;
+	                glLoadIdentity();
+	                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	                glColor3f(0f, 1f, 0f);
 
-                glVertex2f(-100, -100);
-                glVertex2f(-100, 100);
-                glVertex2f(100, 100);
-                glEnd();
-            }
-        }
+	                glBegin(GL_TRIANGLES);
+	                glVertex2f(-100, -100);
+	                glVertex2f(100, -100);
+	                glVertex2f(100, 100);
+
+	                glVertex2f(-100, -100);
+	                glVertex2f(-100, 100);
+	                glVertex2f(100, 100);
+	                glEnd();
+	            }
+	        }
+		}
     });
     
     window.addOnMove((Windowable window, int x, int y) {
@@ -161,11 +171,20 @@ void main() {
         import core.time : dur;
         Window.messageLoopIteration();
 
+		bool initContext;
+
         if (window.hasBeenClosed)
             break;
         else {
+			if (window.context !is null && !initContext) {
+				if (auto hasbuf = cast(ContextBuffer2D)window.context) {
+					hasbuf.buffer = new MutableImage(800, 600);
+					initContext = true;
+				}
+			}
+
             window.onDraw();
-            if (window.context !is null)
+			if (initContext)
                 window.context.swapBuffers();
         }
         Thread.sleep(dur!"msecs"(25));

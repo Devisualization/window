@@ -21,13 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-module devisualization.window.context;
+module devisualization.window.context.opengl;
 import devisualization.window.window;
 import devisualization.window.interfaces.context;
-
-import derelict.opengl3.gl;
-import derelict.opengl3.wgl;
-import derelict.opengl3.wglext;
 
 private {
     bool loadedDGL;
@@ -35,8 +31,17 @@ private {
 
 class OpenglContext : IContext {
     private {
-        HDC hdc_;
-        HGLRC hglrc_;
+        import derelict.opengl3.gl;
+        import dglx = derelict.opengl3.glx;
+        import dxtypes = derelict.util.xtypes;
+
+        import xx11 = x11.X;
+        import xlib = x11.Xlib;
+
+        dxtypes.XVisualInfo* vi;
+        dglx.GLXContext glc;
+        xlib.Display* display;
+        xlib.Window window;
     }
 
     this(Window window, WindowConfig config) {
@@ -44,48 +49,50 @@ class OpenglContext : IContext {
             DerelictGL.load();
             loadedDGL = true;
         }
+        this.window = window.x11Window;
+        display = window.x11Display;
 
-        import windows : GetDC;
-        hdc_ = GetDC(window.hwnd);
+        int[] att = [dglx.GLX_RGBA, dglx.GLX_DEPTH_SIZE, 24, dglx.GLX_DOUBLEBUFFER, xx11.None];
+        vi = dglx.glXChooseVisual(display, 0, att.ptr);
 
-        configurePixelFormat(window, config, hdc_);
+        glc = dglx.glXCreateContext(display, vi, null, GL_TRUE);
 
-        hglrc_ = cast(HGLRC)wglCreateContext(hdc_);
         activate();
     }
 
     @property {
         void activate() {
-            wglMakeCurrent(hdc_, hglrc_);
+            dglx.glXMakeCurrent(display, cast(uint)window, glc);
             DerelictGL.reload();
         }
-
+        
         void destroy() {
-            wglDeleteContext(hglrc_);
+            xlib.XFree(vi);
+            dglx.glXDestroyContext(display, glc);
         }
-
+        
         void swapBuffers() {
 			glFlush();
-			SwapBuffers(hdc_);
+			dglx.glXSwapBuffers(display, cast(uint)window);
         }
 
         WindowContextType type() { return WindowContextType.Opengl; }
-
+        
         string toolkitVersion() {
             char[] str;
             const(char*) c = glGetString(GL_VERSION);
             size_t i;
-
+            
             if (c !is null) {
                 while (c[i] != '\0') {
                     str ~= c[i];
                     i++;
                 }
             }
-
+            
             return str.idup;
         }
-
+        
         string shadingLanguageVersion() {
             char[] str;
             const(char*) c = glGetString(GL_SHADING_LANGUAGE_VERSION);
@@ -100,10 +107,10 @@ class OpenglContext : IContext {
             
             return str.idup;
         }
-
+        
         string[] extensions() {
             string[] ret;
-
+            
             char[] str;
             const(char*) c = glGetString(GL_SHADING_LANGUAGE_VERSION);
             size_t i;
@@ -122,49 +129,5 @@ class OpenglContext : IContext {
             
             return ret;
         }
-    }
-}
-
-/*class Direct3DContext : IContext {
-    this(Window window, WindowConfig config) {
-
-    }
-
-    WindowContextType type() { return WindowContextType.Direct3D; }
-}*/
-
-private {
-    import windows : SwapBuffers, HDC, HGLRC;
-
-    void configurePixelFormat(Window window, WindowConfig config, HDC hdc_) {
-        import windows : PIXELFORMATDESCRIPTOR, ChoosePixelFormat, SetPixelFormat, PFD_DRAW_TO_WINDOW, PFD_SUPPORT_OPENGL, PFD_DOUBLEBUFFER, PFD_TYPE_RGBA, PFD_MAIN_PLANE;
-        PIXELFORMATDESCRIPTOR pfd = PIXELFORMATDESCRIPTOR( 
-            PIXELFORMATDESCRIPTOR.sizeof,
-                1,                     // version number  
-                PFD_DRAW_TO_WINDOW |   // support window  
-                PFD_SUPPORT_OPENGL |   // support OpenGL  
-                PFD_DOUBLEBUFFER,      // double buffered  
-                PFD_TYPE_RGBA,         // RGBA type  
-                24,                    // 24-bit color depth  
-                0, 0, 0, 0, 0, 0,      // color bits ignored  
-                0,                     // no alpha buffer  
-                0,                     // shift bit ignored  
-                0,                     // no accumulation buffer  
-                0, 0, 0, 0,            // accum bits ignored  
-                32,                    // 32-bit z-buffer  
-                0,                     // no stencil buffer  
-                0,                     // no auxiliary buffer  
-                PFD_MAIN_PLANE,        // main layer  
-                0,                     // reserved  
-                0, 0, 0                // layer masks ignored  
-          );
-                                                          
-        int  iPixelFormat; 
-        
-        // get the best available match of pixel format for the device context   
-        iPixelFormat = ChoosePixelFormat(hdc_, &pfd); 
-        
-        // make that the pixel format of the device context  
-        SetPixelFormat(hdc_, iPixelFormat, &pfd);
     }
 }

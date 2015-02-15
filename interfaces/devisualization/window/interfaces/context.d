@@ -28,11 +28,12 @@
  * 		SOFTWARE.
  */
 module devisualization.window.interfaces.context;
+import devisualization.image.image;
 
 /**
  * The type of context available.
  */
-enum WindowContextType : ubyte {
+enum WindowContextType : ushort {
 	/**
 	 * No context to be used.
 	 */
@@ -58,7 +59,12 @@ enum WindowContextType : ubyte {
 	/**
 	 * OpenGL context 3+
 	 */
-    Opengl3Plus = 1 << 3
+    Opengl3Plus = 1 << 3,
+
+	/**
+	 * A 2d buffer is provided to draw into
+	 */
+	Buffer2D = 1 << 4
 }
 
 /**
@@ -109,4 +115,29 @@ interface IContext {
          */
         string shadingLanguageVersion();
     }
+}
+
+/**
+ * Allows for drawing into a predefined buffer for 2d operations
+ */
+interface ContextBuffer2D : IContext {
+	@property {
+		/**
+		 * Buffer to draw into.
+		 * Default value will be null. Must be set first before using.
+		 * 
+		 * Returns:
+		 * 		The buffer that can be drawn into.
+		 * 		Will not clear between swapping of buffers.
+		 */
+		ref Image buffer();
+
+		/**
+		 * Sets the buffer to draw into.
+		 * 
+		 * Params:
+		 * 		buffer	=	The image buffer to draw into
+		 */
+		void buffer(Image buffer);
+	}
 }

@@ -303,7 +303,7 @@ private {
     enum DWORD dwExStyle = 0;
     enum DWORD dwStyle = WS_OVERLAPPEDWINDOW;
     
-    enum wstring WindowClassName = "DWC window\0"w;
+    enum wstring WindowClassName = "Devisualization.Window window\0"w;
     
     enum DWORD dwFullscreen = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
     enum DWORD dwExFullscreen = WS_EX_APPWINDOW | WS_EX_TOPMOST;
@@ -411,11 +411,13 @@ private {
                     
                 case WM_PAINT:
                     if (window.context_ is null) {
-                        if ((window.config_.contextType | WindowContextType.Opengl3Plus) || (window.config_.contextType | WindowContextType.OpenglLegacy)) {
+						if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
                             window.context_ = new OpenglContext(window, window.config_);
                         } else if (window.config_.contextType == WindowContextType.Direct3D) {
                             // create Direct3d context!
-                        }
+						} else if (window.config_.contextType == WindowContextType.Buffer2D) {
+							window.context_ = new Buffer2DContext(window, window.config_);
+						}
                     }
                     window.onDraw();
                     return cast(LRESULT)0;

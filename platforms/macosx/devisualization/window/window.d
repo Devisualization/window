@@ -53,7 +53,7 @@ class Window : Windowable {
             dispToInsts[cocoaId] = this;
         }
 
-        if ((config.contextType | WindowContextType.Opengl3Plus) || (config.contextType | WindowContextType.OpenglLegacy)) {
+		if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
             // create Opengl context!
             context_ = new OpenglContext(this, config, cocoaId);
         } else if (config.contextType == WindowContextType.Direct3D) {
