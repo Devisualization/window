@@ -34,7 +34,7 @@ class Buffer2DContext : ContextBuffer2D {
 		import xutil = x11.Xutil;
 
 		Window window;
-		xlib.Display* display;
+		xlib.Display display;
 		xlib.Window* x11win;
 		xlib.Pixmap* pixmap;
 		
@@ -74,7 +74,7 @@ class Buffer2DContext : ContextBuffer2D {
 				}
 				
 				xlib.XImage* theImage = xlib.XCreateImage(display, pixmap, 24, xx11.XYBitmap, 0, bufferdata[0].ptr, buffer_.width, buffer_.height, 32, 0);
-				xlib.XPutImage(display, x11win, xx11.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
+				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, buffer_.width, buffer_.height);
 
 				xlib.XSetWindowBackgroundPixmap(display, x11win, pixmap);
 				xutil.XDestroyImage(theImage);
