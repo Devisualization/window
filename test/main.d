@@ -35,6 +35,9 @@ void main() {
     window.size(200, 200);
     window.move(200, 200);
 
+	auto myBuffer = new MutableImage(800, 600);
+	auto myBufferRGBA = myBuffer.rgba;
+
     window.addOnDraw((Windowable window2) {
         //writeln("drawing");
 
@@ -51,9 +54,9 @@ void main() {
         }
 
 		if (auto hasbuf = cast(ContextBuffer2D)window.context) {
-			foreach(i, p; hasbuf.buffer.rgba) {
-				hasbuf.buffer.rgba[i].r = ushort.max;
-				hasbuf.buffer.rgba[i].a = ushort.max;
+			foreach(i, p; myBufferRGBA) {
+				myBufferRGBA[i].r = ushort.max;
+				myBufferRGBA[i].a = ushort.max;
 			}
 		} else {
 	        version(Windows) {
@@ -178,7 +181,7 @@ void main() {
         else {
 			if (window.context !is null && !initContext) {
 				if (auto hasbuf = cast(ContextBuffer2D)window.context) {
-					hasbuf.buffer = new MutableImage(800, 600);
+					hasbuf.buffer = myBuffer;
 					initContext = true;
 				}
 			}
