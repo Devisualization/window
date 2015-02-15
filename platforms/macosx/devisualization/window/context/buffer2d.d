@@ -30,6 +30,8 @@ private {
 }
 
 class Buffer2DContext : ContextBuffer2D {
+    import devisualization.image.image;
+
     private {
         int cocoaId;
 		
@@ -60,11 +62,12 @@ class Buffer2DContext : ContextBuffer2D {
 				foreach(i, pixel; buffer_.rgba.allPixels) {
 					bufferdata[i][0] = pixel.r_ubyte;
 					bufferdata[i][1] = pixel.g_ubyte;
-					bufferdata[i][2] = pixel.b_ubte;
+					bufferdata[i][2] = pixel.b_ubyte;
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 			
-				cocoaSwapBuffer2DBuffers(cocoaId, &bufferdata[0].ptr, buffer_.width, buffer_.height);
+                                ubyte* data = bufferdata[0].ptr;
+				cocoaSwapBuffer2DBuffers(cocoaId, &data, buffer_.width, buffer_.height);
 			}
         }
 
