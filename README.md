@@ -5,6 +5,9 @@ Depends on Derelict-GL3 for Opengl support.<br/>
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/window?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Devisualization/window.svg)](https://travis-ci.org/Devisualization/window)
 
+There is currently issues for running within Cygwin on Windows. The window may seem choppy and will not auto flush standard output.
+There is no clear cut fix for this at the present time as it is on Cygwin's side.
+
 Features
 --------
 * Create, Destroy, On draw
