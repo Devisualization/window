@@ -48,28 +48,24 @@ class Buffer2DContext : ContextBuffer2D {
 		hwnd = window.hwnd;
 		
 		buffer_ = null;
-		activate();
 	}
 	
 	@property {
-		void activate() {
-			hdc = BeginPaint(hwnd, &ps);
-
-			hdcMem = CreateCompatibleDC(hdc);
-		}
-		
+		void activate() {}
 		void destroy() {}
 		
 		void swapBuffers() {
+			hdc = BeginPaint(hwnd, &ps);
+			hdcMem = CreateCompatibleDC(hdc);
+
 			if (buffer_ !is null) {
-			
 				// will only reallocate raw data buffer IF the Image buffer size has changed
-				bufferdata.length = buffer_.rgba.length;
+				bufferdata.length = buffer_.width * buffer_.height;
 				
 				foreach(i, pixel; buffer_.rgba.allPixels) {
-					bufferdata[i][0] = pixel.r_ubyte;
+					bufferdata[i][2] = pixel.r_ubyte;
 					bufferdata[i][1] = pixel.g_ubyte;
-					bufferdata[i][2] = pixel.b_ubyte;
+					bufferdata[i][0] = pixel.b_ubyte;
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
@@ -78,18 +74,18 @@ class Buffer2DContext : ContextBuffer2D {
 				
 				HBITMAP hBitmap = CreateBitmap(cast(uint)buffer_.width, cast(uint)buffer_.height, 1, 32, bufferdata.ptr);
 				HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
-				
+
 				HBITMAP bitmap;
 				GetObjectA(hBitmap, HBITMAP.sizeof, &bitmap);
 				
 				// auto stretch the image buffer to client screen size
 				StretchBlt(hdc, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height, hdcMem, 0, 0, winsize.right, winsize.bottom, SRCCOPY);
-			
+
 				SelectObject(hdcMem, oldBitmap);
 			}
-			
-			DeleteDC(hdcMem);
+
 			EndPaint(hwnd, &ps);
+			DeleteDC(hdcMem);
 		}
 		
 		WindowContextType type() { return WindowContextType.Buffer2D; }
