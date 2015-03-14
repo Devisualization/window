@@ -125,14 +125,6 @@ class OpenglContext : IContext {
     }
 }
 
-/*class Direct3DContext : IContext {
-    this(Window window, WindowConfig config) {
-
-    }
-
-    WindowContextType type() { return WindowContextType.Direct3D; }
-}*/
-
 private {
     import windows : SwapBuffers, HDC, HGLRC;
 

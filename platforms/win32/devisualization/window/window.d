@@ -413,7 +413,9 @@ private {
 						if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
                             window.context_ = new OpenglContext(window, window.config_);
                         } else if (window.config_.contextType == WindowContextType.Direct3D) {
-                            // create Direct3d context!
+							version(Have_directx_d) {
+								window.context_ = new Direct3dContext(window, window.config_);
+							}
 						} else if (window.config_.contextType == WindowContextType.Buffer2D) {
 							window.context_ = new Buffer2DContext(window, window.config_);
 						}

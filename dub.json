@@ -22,7 +22,6 @@
             
             "sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
             "importPaths-windows": ["platforms/win32", "WindowsAPI"],
-            "libs-windows": ["user32", "gdi32"],
             
             "sourcePaths-linux": ["platforms/linux"],
             "importPaths-linux": ["platforms/linux"],
@@ -40,7 +39,23 @@
             "dependencies": {
                 "de_window:interfaces": "*",
                 "derelict-gl3": ">=1.0.4"
-            }
+            },
+
+			"configurations": [
+				{
+					"name": "opengl"
+				},
+				{
+					"name": "directx",
+					"platforms": ["windows"],
+
+		            "libs-windows": ["d3dcompiler", "d3d11", "dxgi"],
+
+					"dependencies-windows": {
+						"directx-d": ">=0.9.1"
+					}
+				}
+			]
         },
         {
             "name": "test",
