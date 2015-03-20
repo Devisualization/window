@@ -7,6 +7,7 @@
     "license": "MIT",
     "targetType": "none",
     "sourcePaths": [],
+	"buildRequirements": ["noDefaultFlags"],
     "subPackages": [
         {
             "name": "interfaces",
@@ -22,13 +23,14 @@
             
             "sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
             "importPaths-windows": ["platforms/win32", "WindowsAPI"],
-            
+            "libs-windows": ["gdi32"],
+			
             "sourcePaths-linux": ["platforms/linux"],
             "importPaths-linux": ["platforms/linux"],
             "libs-linux": ["Xrandr"],
             
             "dependencies-linux": {
-                "x11": ">=1.0.3"
+                "x11": "~master"
             },
             
             "sourcePaths-osx": ["platforms/macosx"],
@@ -38,7 +40,7 @@
             
             "dependencies": {
                 "de_window:interfaces": "*",
-                "derelict-gl3": ">=1.0.4"
+                "derelict-gl3": ">=1.0.12"
             },
 
 			"configurations": [
