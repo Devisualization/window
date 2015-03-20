@@ -45,8 +45,10 @@ class Window : Windowable {
 
     this(WindowConfig config) {
         config_ = config;
-        hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this);
         title = config.title;
+		
+		Window this_ = this;
+        hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this_);
     }
 
     static {
