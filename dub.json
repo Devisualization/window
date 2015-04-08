@@ -14,7 +14,7 @@
             "sourcePaths": ["interfaces"],
             "importPaths": ["interfaces"],
             "dependencies": {
-                "de_image:interfaces": ">=0.3.3"
+                "de_image:interfaces": ">=0.4.2"
             }
         },
         {
