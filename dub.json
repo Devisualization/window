@@ -23,7 +23,7 @@
             
             "sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
             "importPaths-windows": ["platforms/win32", "WindowsAPI"],
-            "libs-windows": ["gdi32"],
+            "libs-windows": ["gdi32", "user32"],
 			
             "sourcePaths-linux": ["platforms/linux"],
             "importPaths-linux": ["platforms/linux"],
