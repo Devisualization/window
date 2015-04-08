@@ -65,8 +65,8 @@
             "importPaths": ["test"],
             "targetType": "executable",
             "dependencies": {
-                "de_window:platform": "*",   
-                "de_image:mutable": "*"    
+                "de_window:platform": "*",
+                "de_image:mutable": "*"
             }
         }
     ]
