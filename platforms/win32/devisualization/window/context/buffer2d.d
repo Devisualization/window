@@ -86,6 +86,9 @@ class Buffer2DContext : ContextBuffer2D {
 
 			EndPaint(hwnd, &ps);
 			DeleteDC(hdcMem);
+
+			// perform the actual redraw!
+			InvalidateRgn(hwnd, null, false);
 		}
 		
 		WindowContextType type() { return WindowContextType.Buffer2D; }
