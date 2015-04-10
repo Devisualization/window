@@ -56,7 +56,7 @@ TODO
 * Confirm prevent close works on Windows and X11
 * Direct3d abstraction within interfaces?
 * On window redisplay(undo of minimise)/maximise/minimise
-* Confirm Buffer2d context works on Posix
+* Add messageLoopIteration respective function for wait till message (win/lin/osx)
 
 X11 based window manager weird behaviours:
 * Make sure icons work on Posix
