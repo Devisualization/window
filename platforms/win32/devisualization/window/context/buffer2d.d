@@ -60,9 +60,10 @@ class Buffer2DContext : ContextBuffer2D {
 
 			if (buffer_ !is null) {
 				// will only reallocate raw data buffer IF the Image buffer size has changed
-				bufferdata.length = buffer_.width * buffer_.height;
+				auto rgba = buffer_.rgba;
+				bufferdata.length = rgba.length;
 				
-				foreach(i, pixel; buffer_.rgba.allPixels) {
+				foreach(i, pixel; rgba) {
 					bufferdata[i][2] = pixel.r_ubyte;
 					bufferdata[i][1] = pixel.g_ubyte;
 					bufferdata[i][0] = pixel.b_ubyte;
