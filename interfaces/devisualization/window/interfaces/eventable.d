@@ -84,13 +84,17 @@ mixin template Eventing(string name, T...) {
     }});
 
     mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
-		import std.range : walkLength;
-		
-		mixin("auto t = filter!(a => a !is " ~ name ~ "_assoc[value])(" ~ name ~ "_);");
-		t.moveAll(mixin(name ~ "_"));
-		mixin(name ~ "_.length = t.walkLength;");
-
-        mixin(name ~ "_assoc.remove(value);");
+		if (value in mixin(name ~ "_assoc")) {
+			bool delegate(T)[] t;
+			
+			foreach(v; mixin(name)) {
+				if (mixin("v is " ~ name ~ "_assoc[value]"))
+					continue;
+			}
+			
+			mixin(name ~ " = t;");
+			mixin(name ~ "_assoc.remove(value);");
+		}
 	}});
     
     mixin("size_t count" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(){
