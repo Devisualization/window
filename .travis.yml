@@ -19,4 +19,7 @@ matrix:
         - sudo apt-get update -q
         - sudo apt-get install libstdc++6
         - ldc2 --version
-script: dub build de_window:test --compiler=${DC}
+script:
+    - rm ./dub.selections.json
+    - dub upgrade
+    - dub build de_window:test --compiler=${DC}
