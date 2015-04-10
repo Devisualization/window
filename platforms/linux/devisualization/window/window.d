@@ -92,125 +92,130 @@ class Window : Windowable {
         bool messageLoopIteration() {
             xlib.XEvent e;
             
-			if (xlib.XPending(display_) <= 0) {
-				return false;
-			}
-
-            xlib.XNextEvent(display_, &e);
-            if (e.type == xx11.Expose) {
-                if (e.xexpose.window in dispToInsts) {
-                    Window window = dispToInsts[e.xexpose.window];
-                    if (!window.hasBeenClosed_)
-                        window.onDraw();
-                }
-            } else if (e.type == xx11.ConfigureNotify) {
-                if (e.xconfigure.window in dispToInsts) {
-                    Window window = dispToInsts[e.xconfigure.window];
-
-                    if (!window.hasBeenClosed_) {
-                        if (window.lastX != e.xconfigure.x || window.lastY != e.xconfigure.y) {
-                            window.onMove(e.xconfigure.x, e.xconfigure.y);
-                            window.lastX = e.xconfigure.x;
-                            window.lastY = e.xconfigure.y;
-                        }
+	    auto pending = xlib.XPending(display_);
+            if (pending <= 0) {
+                return false;
+            }
+            
+            for (auto i = 0; i<pending; ++i)
+            {
+                
+                xlib.XNextEvent(display_, &e);
+                if (e.type == xx11.Expose) {
+                    if (e.xexpose.window in dispToInsts) {
+                        Window window = dispToInsts[e.xexpose.window];
+                        if (!window.hasBeenClosed_)
+                            window.onDraw();
+                    }
+                } else if (e.type == xx11.ConfigureNotify) {
+                    if (e.xconfigure.window in dispToInsts) {
+                        Window window = dispToInsts[e.xconfigure.window];
                         
-                        if (window.lastWidth != e.xconfigure.width || window.lastHeight != e.xconfigure.height) {
-                            uint w = e.xconfigure.width;
-                            uint h = e.xconfigure.height;
-                            window.onResize(w, h);
-                            window.lastWidth = e.xconfigure.width;
-                            window.lastHeight = e.xconfigure.height;
+                        if (!window.hasBeenClosed_) {
+                            if (window.lastX != e.xconfigure.x || window.lastY != e.xconfigure.y) {
+                                window.onMove(e.xconfigure.x, e.xconfigure.y);
+                                window.lastX = e.xconfigure.x;
+                                window.lastY = e.xconfigure.y;
+                            }
+                            
+                            if (window.lastWidth != e.xconfigure.width || window.lastHeight != e.xconfigure.height) {
+                                uint w = e.xconfigure.width;
+                                uint h = e.xconfigure.height;
+                                window.onResize(w, h);
+                                window.lastWidth = e.xconfigure.width;
+                                window.lastHeight = e.xconfigure.height;
+                            }
                         }
                     }
-                }
-            } else if (e.type == xx11.ClientMessage) {
-                if (e.xclient.window in dispToInsts) {
-                    Window window = dispToInsts[e.xclient.window];
-                    if (!window.hasBeenClosed_) {
-                        if (e.xclient.format == 32 && e.xclient.data.l[0] == window.closeAtom_) {
-                            window.onClose();
-                            if (window.countOnClose() == 0)
-                                window.close();
+                } else if (e.type == xx11.ClientMessage) {
+                    if (e.xclient.window in dispToInsts) {
+                        Window window = dispToInsts[e.xclient.window];
+                        if (!window.hasBeenClosed_) {
+                            if (e.xclient.format == 32 && e.xclient.data.l[0] == window.closeAtom_) {
+                                window.onClose();
+                                if (window.countOnClose() == 0)
+                                    window.close();
+                            }
                         }
                     }
-                }
-            } else if (e.type == xx11.MotionNotify) {
-                if (e.xmotion.window in dispToInsts) {
-                    Window window = dispToInsts[e.xmotion.window];
-                    if (!window.hasBeenClosed_) {
-                        window.onMouseMove(e.xmotion.x, e.xmotion.y);
-                    }
-                }
-            } else if (e.type == xx11.ButtonPress) {
-                if (e.xbutton.window in dispToInsts) {
-                    Window window = dispToInsts[e.xbutton.window];
-                    if (!window.hasBeenClosed_) {
-                        MouseButtons button;
-
-                        switch(e.xbutton.button) {
-                            case xx11.Button2:
-                                button = MouseButtons.Middle;
-                                break;
-
-                            case xx11.Button3:
-                                button = MouseButtons.Right;
-                                break;
-
-                            case xx11.Button1:
-                            default:
-                                button = MouseButtons.Left;
-                                break;
+                } else if (e.type == xx11.MotionNotify) {
+                    if (e.xmotion.window in dispToInsts) {
+                        Window window = dispToInsts[e.xmotion.window];
+                        if (!window.hasBeenClosed_) {
+                            window.onMouseMove(e.xmotion.x, e.xmotion.y);
                         }
-
-                        window.onMouseDown(button, e.xbutton.x, e.xbutton.y);
                     }
-                }
-            } else if (e.type == xx11.ButtonRelease) {
-                if (e.xbutton.window in dispToInsts) {
-                    Window window = dispToInsts[e.xbutton.window];
-                    if (!window.hasBeenClosed_) {
-                        MouseButtons button;
-                        
-                        switch(e.xbutton.button) {
-                            case xx11.Button2:
-                                button = MouseButtons.Middle;
-                                break;
-                                
-                            case xx11.Button3:
-                                button = MouseButtons.Right;
-                                break;
-                                
-                            case xx11.Button1:
-                            default:
-                                button = MouseButtons.Left;
-                                break;
+                } else if (e.type == xx11.ButtonPress) {
+                    if (e.xbutton.window in dispToInsts) {
+                        Window window = dispToInsts[e.xbutton.window];
+                        if (!window.hasBeenClosed_) {
+                            MouseButtons button;
+                            
+                            switch(e.xbutton.button) {
+                                case xx11.Button2:
+                                    button = MouseButtons.Middle;
+                                    break;
+                                    
+                                case xx11.Button3:
+                                    button = MouseButtons.Right;
+                                    break;
+                                    
+                                case xx11.Button1:
+                                default:
+                                    button = MouseButtons.Left;
+                                    break;
+                            }
+                            
+                            window.onMouseDown(button, e.xbutton.x, e.xbutton.y);
                         }
-                        
-                        window.onMouseUp(button);
                     }
-                }
-            } else if (e.type == xx11.KeyPress) {
-                if (e.xkey.window in dispToInsts) {
-                    Window window = dispToInsts[e.xkey.window];
-                    if (!window.hasBeenClosed_) {
-                        xlib.KeySym symbol;
-                        xutil.XLookupString(cast(xlib.XKeyEvent*)(&e.xkey), null, 0, &symbol, null);
-                        window.onKeyDown(convertKeyFromXlibEvent(cast(uint)symbol), convertKeyFromXlibEventModifiers(e.xkey.state));
+                } else if (e.type == xx11.ButtonRelease) {
+                    if (e.xbutton.window in dispToInsts) {
+                        Window window = dispToInsts[e.xbutton.window];
+                        if (!window.hasBeenClosed_) {
+                            MouseButtons button;
+                            
+                            switch(e.xbutton.button) {
+                                case xx11.Button2:
+                                    button = MouseButtons.Middle;
+                                    break;
+                                    
+                                case xx11.Button3:
+                                    button = MouseButtons.Right;
+                                    break;
+                                    
+                                case xx11.Button1:
+                                default:
+                                    button = MouseButtons.Left;
+                                    break;
+                            }
+                            
+                            window.onMouseUp(button);
+                        }
                     }
-                }
-            } else if (e.type == xx11.KeyRelease) {
-                if (e.xkey.window in dispToInsts) {
-                    Window window = dispToInsts[e.xkey.window];
-                    if (!window.hasBeenClosed_) {
-                        xlib.KeySym symbol;
-                        xutil.XLookupString(cast(xlib.XKeyEvent*)(&e.xkey), null, 0, &symbol, null);
-                        window.onKeyUp(convertKeyFromXlibEvent(cast(uint)symbol), convertKeyFromXlibEventModifiers(e.xkey.state));
+                } else if (e.type == xx11.KeyPress) {
+                    if (e.xkey.window in dispToInsts) {
+                        Window window = dispToInsts[e.xkey.window];
+                        if (!window.hasBeenClosed_) {
+                            xlib.KeySym symbol;
+                            xutil.XLookupString(cast(xlib.XKeyEvent*)(&e.xkey), null, 0, &symbol, null);
+                            window.onKeyDown(convertKeyFromXlibEvent(cast(uint)symbol), convertKeyFromXlibEventModifiers(e.xkey.state));
+                        }
+                    }
+                } else if (e.type == xx11.KeyRelease) {
+                    if (e.xkey.window in dispToInsts) {
+                        Window window = dispToInsts[e.xkey.window];
+                        if (!window.hasBeenClosed_) {
+                            xlib.KeySym symbol;
+                            xutil.XLookupString(cast(xlib.XKeyEvent*)(&e.xkey), null, 0, &symbol, null);
+                            window.onKeyUp(convertKeyFromXlibEvent(cast(uint)symbol), convertKeyFromXlibEventModifiers(e.xkey.state));
+                        }
                     }
                 }
             }
 
-			return true;
-		}
+	    return true;
+	}
     }
     
     @property {
