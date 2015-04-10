@@ -40,7 +40,8 @@
             
             "dependencies": {
                 "de_window:interfaces": "*",
-                "derelict-gl3": ">=1.0.12"
+                "derelict-gl3": ">=1.0.12",
+				"de_util:core": ">=0.0.7"
             },
 
 			"configurations": [

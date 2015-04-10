@@ -18,10 +18,5 @@ matrix:
         - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         - sudo apt-get update -q
         - sudo apt-get install libstdc++6
-        - ldc2 --version
 script:
-    - dub fetch de_util
-    - rm dub.selections.json ; echo "Clearing old dub config"
-    - rm -rf .dub ; echo "Removing old .dub directory"
-    - dub upgrade ; echo "\"Upgrading old config\""
     - dub build de_window:test --compiler=${DC}
