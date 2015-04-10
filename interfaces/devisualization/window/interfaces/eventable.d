@@ -61,63 +61,61 @@ mixin template IEventing(string name, T...) {
  * If is(T[0] == typeof(this)) then it'll use this as being the first argument. 
  */
 mixin template Eventing(string name, T...) {
-    private {
-        mixin(q{bool delegate(T)[] } ~ name ~ "_;");
-        mixin(q{bool delegate(T)[void delegate(T)] } ~ name ~ "_assoc;");
-    }
-
-    mixin("void add" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
-        mixin(name ~ "_ ~= (T args) => {value(args); return false;}();");
-        mixin(name ~ "_assoc[value] = " ~ name ~ "_[$-1];");
-    }});
-
-    mixin("void add" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(bool delegate(T) value) {
-        mixin(name ~ "_ ~= value;"); 
-    }});
-
-    mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(bool delegate(T) value) {
-		import std.range : walkLength;
+	private {
+		mixin(q{bool delegate(T)[] } ~ name ~ "_;");
+		mixin(q{bool delegate(T)[size_t] } ~ name ~ "_assoc;");
 		
-		mixin("auto t = filter!(a => a !is value)(" ~ name ~ "_);");
-		t.moveAll(mixin(name ~ "_"));
-		mixin(name ~ "_.length = t.walkLength;");
-    }});
-
-    mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
-		if (value in mixin(name ~ "_assoc")) {
-			bool delegate(T)[] t;
-			
-			foreach(v; mixin(name)) {
-				if (mixin("v is " ~ name ~ "_assoc[value]"))
-					continue;
-			}
-			
-			mixin(name ~ " = t;");
-			mixin(name ~ "_assoc.remove(value);");
+		union ptrToSizeT {
+			void delegate(T) from;
+			size_t value;
 		}
-	}});
-    
-    mixin("size_t count" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(){
-        return cast(size_t)(mixin(name ~ "_.length") + mixin(name ~ "_assoc.length")); 
-    }});
-    
-    mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{() {
-        mixin(name ~ "_") = [];
-    }});
-    
-    static if (__traits(compiles, typeof(this)) && is(typeof(this) : T[0])) {
-        mixin("void " ~ name ~ q{(T[1 .. $] args) {
-            foreach (del; mixin(name ~ "_")) {
-                if (del(this, args))
-                    return;
-            }
-        }});
-    } else {
-        mixin("void " ~ name ~ q{(T args) {
-            foreach (del; mixin(name ~ "_")) {
-                if (del(args))
-                    return;
-            }
-        }});
-    }
+	}
+	
+	mixin("void add" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
+				mixin(name ~ "_ ~= (T args) => {value(args); return false;}();");
+				mixin(name ~ "_assoc[ptrToSizeT(value).value] = " ~ name ~ "_[$-1];");
+			}});
+	
+	mixin("void add" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(bool delegate(T) value) {
+				mixin(name ~ "_ ~= value;"); 
+			}});
+	
+	mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(bool delegate(T) value) {
+				import std.range : walkLength;
+				
+				mixin("auto t = filter!(a => a !is value)(" ~ name ~ "_);");
+				t.moveAll(mixin(name ~ "_"));
+				mixin(name ~ "_.length = t.walkLength;");
+			}});
+	
+	mixin("void remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(void delegate(T) value) {
+				if (ptrToSizeT(value).value in mixin(name ~ "_assoc")) {
+					mixin("remove" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ "(" ~ name ~ "_assoc[ptrToSizeT(value).value]);");
+					mixin(name ~ "_assoc.remove(ptrToSizeT(value).value);");
+				}
+			}});
+	
+	mixin("size_t count" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{(){
+				return cast(size_t)(mixin(name ~ "_.length") + mixin(name ~ "_assoc.length")); 
+			}});
+	
+	mixin("void clear" ~ toUpper(name[0] ~ "") ~ name[1 ..$] ~ q{() {
+				mixin(name ~ "_") = [];
+			}});
+	
+	static if (__traits(compiles, typeof(this)) && is(typeof(this) : T[0])) {
+		mixin("void " ~ name ~ q{(T[1 .. $] args) {
+					foreach (del; mixin(name ~ "_")) {
+						if (del(this, args))
+							return;
+					}
+				}});
+	} else {
+		mixin("void " ~ name ~ q{(T args) {
+					foreach (del; mixin(name ~ "_")) {
+						if (del(args))
+							return;
+					}
+				}});
+	}
 }
