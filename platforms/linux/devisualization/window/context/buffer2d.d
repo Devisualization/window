@@ -72,7 +72,7 @@ class Buffer2DContext : ContextBuffer2D {
 					tbufferdata.length = buffer_.rgba.length;
 					bufferdata = tbufferdata;
 
-					txImage = xlib.XCreateImage(display, cast(xlib.Visual*)&pixmap, 24, xx11.XYBitmap, 0, cast(char*)bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
+					txImage = xlib.XCreateImage(display, cast(xlib.Visual*)&pixmap, 24, xx11.XYPixmap, 0, cast(char*)bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
 				}
 				
 				foreach(i, pixel; buffer_.rgba.allPixels) {
