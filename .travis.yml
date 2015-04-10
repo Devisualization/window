@@ -20,6 +20,7 @@ matrix:
         - sudo apt-get install libstdc++6
         - ldc2 --version
 script:
-    - rm ./dub.selections.json
-    - dub upgrade
+    - rm dub.selections.json ; echo "Clearing old dub config"
+    - rm .dub ; echo "Removing old .dub directory"
+    - dub upgrade ; echo "\"Upgrading old config\""
     - dub build de_window:test --compiler=${DC}
