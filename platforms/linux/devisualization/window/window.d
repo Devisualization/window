@@ -93,25 +93,6 @@ class Window : Windowable {
             xlib.XEvent e;
             uint i;
             
-            while (i < minBlocking) {
-                xlib.XNextEvent(display_, &e);
-                handleEvent();
-                
-                i++;
-            }
-            
-            i = 0;
-            while (i < maxNonBlocking) {
-                if (xlib.XPending(display_) <= 0) {
-                    return false;
-                }
-
-                xlib.XNextEvent(display_, &e);
-                handleEvent();
-                
-                i++;
-            }
-            
             void handleEvent() {
                 if (e.type == xx11.Expose) {
                     if (e.xexpose.window in dispToInsts) {
@@ -224,6 +205,25 @@ class Window : Windowable {
                         }
                     }
                 }
+            }
+            
+            while (i < minBlocking) {
+                xlib.XNextEvent(display_, &e);
+                handleEvent();
+                
+                i++;
+            }
+            
+            i = 0;
+            while (i < maxNonBlocking) {
+                if (xlib.XPending(display_) <= 0) {
+                    return false;
+                }
+
+                xlib.XNextEvent(display_, &e);
+                handleEvent();
+                
+                i++;
             }
 
 			return true;
