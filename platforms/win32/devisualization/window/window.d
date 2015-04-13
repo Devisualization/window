@@ -62,15 +62,32 @@ class Window : Windowable {
             }
         }
 
-        bool messageLoopIteration() {
+        bool messageLoopIteration(uint minBlocking, uint maxNonBlocking) {
 			MSG msg;
-			int ret = PeekMessageW(&msg, null, 0, 0, PM_REMOVE);
+			uint i;
+			
+			while (i < minBlocking) {
+                int ret = GetMessageW(&msg, null, 0, 0);
 
-            if (ret == 0)
-				return false;
+                TranslateMessage(&msg);
+                DispatchMessageW(&msg);
+                
+                i++;
+            }
+            
+            i = 0;
+            while (i < maxNonBlocking) {
+                int ret = PeekMessageW(&msg, null, 0, 0, PM_REMOVE);
 
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
+                if (ret == 0) {
+                    return false;
+                } else {
+                    TranslateMessage(&msg);
+                    DispatchMessageW(&msg);
+                }
+                
+                i++;
+            }
 
 			return true;
         }
