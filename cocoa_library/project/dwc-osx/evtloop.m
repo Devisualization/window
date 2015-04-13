@@ -23,15 +23,37 @@
  */
 #import <Cocoa/Cocoa.h>
 
-int cocoaRunLoopIterate() {
-    NSEvent* event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode: NSDefaultRunLoopMode dequeue: YES];
+/**
+ * @param minBlocking Will always be handled
+ * @param maxNonBlocking Will not always be 100% handled. Return true if the last one completed all.
+ */
+int cocoaRunLoopIterate(unsigned int minBlocking, unsigned int maxNonBlocking) {
+    unsigned int i;
     
-    if (event != nil) {
-        
+    // minBlocking
+    while(i < minBlocking) {
+        NSEvent* event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantFuture] inMode: NSDefaultRunLoopMode dequeue: YES];
         [NSApp sendEvent: event];
         [NSApp updateWindows];
+        i++;
+    }
+    
+    
+    // maxNonBlockings
+    i = 0;
+    Boolean last = true;
+    while(last) {
+        NSEvent* event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode: NSDefaultRunLoopMode dequeue: YES];
+    
+        if (event != nil) {
         
-        return 1;
+            [NSApp sendEvent: event];
+            [NSApp updateWindows];
+        } else {
+            last = false;
+        }
+        
+        i++;
     }
     
     return 0;

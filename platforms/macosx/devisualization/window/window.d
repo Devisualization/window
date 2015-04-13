@@ -75,8 +75,8 @@ class Window : Windowable {
             }
         }
         
-        bool messageLoopIteration() {
-			return cast(bool)cocoaRunLoopIterate();
+        bool messageLoopIteration(uint minBlocking=0, uint maxNonblocking=1) {
+			return cast(bool)cocoaRunLoopIterate(minBlocking, maxNonBlocking);
         }
     }
     
@@ -239,7 +239,7 @@ private {
     
         void cocoaInit();
         int cocoaCreateWindow(CocoaWindowData data);
-        int cocoaRunLoopIterate();
+        int cocoaRunLoopIterate(uint maxBlocking, uint maxNonBlocking);
         void cocoaSetTitle(int window, char* title);
         void cocoaSetSize(int window, int width, int height);
         void cocoaSetPosition(int window, int x, int y);
