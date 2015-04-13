@@ -5,6 +5,9 @@ Depends on Derelict-GL3 for Opengl support.<br/>
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/Devisualization/window?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/Devisualization/window.svg)](https://travis-ci.org/Devisualization/window)
 
+There is currently issues for running within Cygwin on Windows. The window may seem choppy and will not auto flush standard output.
+There is no clear cut fix for this at the present time as it is on Cygwin's side.
+
 Features
 --------
 * Create, Destroy, On draw
@@ -12,7 +15,8 @@ Features
 * Key down/up with modifiers
 * Mouse left/right/middle down/up
 * Window Icon, Text
-* OpenGL (both legacy and 3+) creation (Windows, X11, OSX (Cocoa))
+* OpenGL (both legacy and 3+) context creation (Windows, X11, OSX (Cocoa))
+* Direct3d context creation on windows (untested)
 * 2D image buffer drawing context
 
 Example
@@ -50,9 +54,9 @@ During the drawing, check if you have a valid context. OnDraw may occur while th
 TODO
 -----
 * Confirm prevent close works on Windows and X11
-* Context creation (Direct3D on Windows)
+* Direct3d abstraction within interfaces?
 * On window redisplay(undo of minimise)/maximise/minimise
-* Confirm Buffer2d context works on Posix
+* Add messageLoopIteration respective function for wait till message (win/lin/osx)
 
 X11 based window manager weird behaviours:
 * Make sure icons work on Posix

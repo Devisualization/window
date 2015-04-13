@@ -45,8 +45,10 @@ class Window : Windowable {
 
     this(WindowConfig config) {
         config_ = config;
-        hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this);
         title = config.title;
+		
+		Window this_ = this;
+        hwnd_ = createWindow(config.x, config.y, config.width, config.height, &windowHandler, &this_);
     }
 
     static {
@@ -413,7 +415,9 @@ private {
 						if ((window.config_.contextType | WindowContextType.Opengl3Plus) == WindowContextType.Opengl3Plus || (window.config_.contextType | WindowContextType.OpenglLegacy) == WindowContextType.OpenglLegacy) {
                             window.context_ = new OpenglContext(window, window.config_);
                         } else if (window.config_.contextType == WindowContextType.Direct3D) {
-                            // create Direct3d context!
+							version(Have_directx_d) {
+								window.context_ = new Direct3dContext(window, window.config_);
+							}
 						} else if (window.config_.contextType == WindowContextType.Buffer2D) {
 							window.context_ = new Buffer2DContext(window, window.config_);
 						}

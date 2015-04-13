@@ -7,13 +7,14 @@
     "license": "MIT",
     "targetType": "none",
     "sourcePaths": [],
+	"buildRequirements": ["noDefaultFlags"],
     "subPackages": [
         {
             "name": "interfaces",
             "sourcePaths": ["interfaces"],
             "importPaths": ["interfaces"],
             "dependencies": {
-                "de_image:interfaces": ">=0.3.3"
+                "de_image:interfaces": ">=0.4.2"
             }
         },
         {
@@ -22,14 +23,14 @@
             
             "sourcePaths-windows": ["platforms/win32", "WindowsAPI"],
             "importPaths-windows": ["platforms/win32", "WindowsAPI"],
-            "libs-windows": ["user32", "gdi32"],
-            
+            "libs-windows": ["gdi32", "user32"],
+			
             "sourcePaths-linux": ["platforms/linux"],
             "importPaths-linux": ["platforms/linux"],
             "libs-linux": ["Xrandr"],
             
             "dependencies-linux": {
-                "x11": ">=1.0.3"
+                "x11": "~master"
             },
             
             "sourcePaths-osx": ["platforms/macosx"],
@@ -39,8 +40,25 @@
             
             "dependencies": {
                 "de_window:interfaces": "*",
-                "derelict-gl3": ">=1.0.4"
-            }
+                "derelict-gl3": ">=1.0.12",
+				"de_util:core": ">=0.0.7"
+            },
+
+			"configurations": [
+				{
+					"name": "opengl"
+				},
+				{
+					"name": "directx",
+					"platforms": ["windows"],
+
+		            "libs-windows": ["d3dcompiler", "d3d11", "dxgi"],
+
+					"dependencies-windows": {
+						"directx-d": ">=0.9.1"
+					}
+				}
+			]
         },
         {
             "name": "test",
@@ -48,8 +66,8 @@
             "importPaths": ["test"],
             "targetType": "executable",
             "dependencies": {
-                "de_window:platform": "*",   
-                "de_image:mutable": "*"    
+                "de_window:platform": "*",
+                "de_image:mutable": "*"
             }
         }
     ]

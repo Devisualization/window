@@ -24,3 +24,4 @@
 module devisualization.window.context;
 public import devisualization.window.context.opengl;
 public import devisualization.window.context.buffer2d;
+public import devisualization.window.context.direct3d;

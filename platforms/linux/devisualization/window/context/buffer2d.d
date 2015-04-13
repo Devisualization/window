@@ -40,6 +40,7 @@ class Buffer2DContext : ContextBuffer2D {
 		
 		Image buffer_;
 		ubyte[4][] bufferdata;
+		xlib.XImage* txImage;
 	}
 	
 	this(Window window, WindowConfig config) {
@@ -60,9 +61,19 @@ class Buffer2DContext : ContextBuffer2D {
 		
 		void swapBuffers() {
 			if (buffer_ !is null) {
-			
-				// will only reallocate raw data buffer IF the Image buffer size has changed
-				bufferdata.length = buffer_.rgba.length;
+
+				if (bufferdata.length != buffer_.rgba.length) {
+					// delete old image used for buffer
+					if (txImage !is null)
+						xutil.XDestroyImage(txImage);
+
+					// create a new buffer
+					ubyte[4][] tbufferdata;
+					tbufferdata.length = buffer_.rgba.length;
+					bufferdata = tbufferdata;
+
+					txImage = xlib.XCreateImage(display, cast(xlib.Visual*)&pixmap, 24, xx11.XYPixmap, 0, cast(char*)bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
+				}
 				
 				foreach(i, pixel; buffer_.rgba.allPixels) {
 					bufferdata[i][0] = pixel.b_ubyte;
@@ -71,11 +82,8 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				xlib.XImage* theImage = xlib.XCreateImage(display, cast(xlib.Visual*)&pixmap, 24, xx11.XYBitmap, 0, cast(char*)bufferdata[0].ptr, cast(uint)buffer_.width, cast(uint)buffer_.height, 32, 0);
-				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), theImage, 0, 0, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height);
-
+				xlib.XPutImage(display, x11win, xlib.DefaultGC(display, 0), txImage, 0, 0, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height);
 				xlib.XSetWindowBackgroundPixmap(display, x11win, pixmap);
-				xutil.XDestroyImage(theImage);
 			}
 		}
 		
