@@ -62,7 +62,7 @@ class Window : Windowable {
             }
         }
 
-        bool messageLoopIteration(uint minBlocking, uint maxNonBlocking) {
+        bool messageLoopIteration(uint minBlocking = 0, uint maxNonBlocking = 1) {
 			MSG msg;
 			uint i;
 			
