@@ -41,20 +41,18 @@ int cocoaRunLoopIterate(unsigned int minBlocking, unsigned int maxNonBlocking) {
     
     // maxNonBlockings
     i = 0;
-    Boolean last = true;
-    while(last && i < maxNonBlocking) {
+    while(i < maxNonBlocking) {
         NSEvent* event = [NSApp nextEventMatchingMask:NSAnyEventMask untilDate:[NSDate distantPast] inMode: NSDefaultRunLoopMode dequeue: YES];
     
         if (event != nil) {
-        
             [NSApp sendEvent: event];
             [NSApp updateWindows];
         } else {
-            last = false;
+            return false;
         }
         
         i++;
     }
     
-    return 0;
+    return true;
 }
