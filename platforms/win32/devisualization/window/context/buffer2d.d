@@ -35,7 +35,9 @@ class Buffer2DContext : ContextBuffer2D {
 		PAINTSTRUCT 	ps;
 		HDC 			hdc;
 		HDC 			hdcMem;
-		
+		RECT winsize;
+		HBITMAP bitmap;
+
 		HWND hwnd;
 		Window window;
 		
@@ -70,19 +72,18 @@ class Buffer2DContext : ContextBuffer2D {
 					bufferdata[i][3] = pixel.a_ubyte;
 				}
 				
-				RECT winsize;
 				GetClientRect(hwnd, &winsize);
 				
 				HBITMAP hBitmap = CreateBitmap(cast(uint)buffer_.width, cast(uint)buffer_.height, 1, 32, bufferdata.ptr);
 				HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
 
-				HBITMAP bitmap;
 				GetObjectA(hBitmap, HBITMAP.sizeof, &bitmap);
 				
 				// auto stretch the image buffer to client screen size
 				StretchBlt(hdc, 0, 0, cast(uint)buffer_.width, cast(uint)buffer_.height, hdcMem, 0, 0, winsize.right, winsize.bottom, SRCCOPY);
 
 				SelectObject(hdcMem, oldBitmap);
+				DeleteObject(hBitmap);
 			}
 
 			EndPaint(hwnd, &ps);
