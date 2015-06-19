@@ -51,6 +51,16 @@ Thread sleep is optional, as messageLoopIteration is blocking but may not wait f
 However it should be one draw per x time units. For most efficient loop.
 During the drawing, check if you have a valid context. OnDraw may occur while there is no valid context.
 
+Using as a dub package
+-----
+To add `de_window` as a dependency to your project use:
+```
+"dependencies": {
+    "de_window:platform": "~>0.1.2",
+}
+```
+Of course instead of "~>0.1.2" can/should be your version number.
+
 TODO
 -----
 * Confirm prevent close works on Windows and X11
